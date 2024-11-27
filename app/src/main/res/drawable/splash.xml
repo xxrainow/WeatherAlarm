@@ -10,9 +10,7 @@
     <item>
         <bitmap
             android:src="@drawable/splash_weather_logo"
-            android:gravity="center"
-            android:width="50dp"
-            android:height="50dp"/>
+            android:gravity="center" />
     </item>
 
 

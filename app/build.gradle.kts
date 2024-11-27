@@ -50,4 +50,7 @@ dependencies {
 
     // 위치 찾기 권한 설정을 위한 라이브러리
     implementation("io.github.ParkSangGwon:tedpermission:2.3.0")
+
+    // Gson 라이브러리
+    implementation("com.google.code.gson:gson:2.8.9")
 }

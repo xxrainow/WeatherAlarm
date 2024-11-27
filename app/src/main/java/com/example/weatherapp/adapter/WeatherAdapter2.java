@@ -11,19 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherapp.data.ModelWeather;
 import com.example.weatherapp.R;
 
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHolder> {
+public class WeatherAdapter2 extends RecyclerView.Adapter<WeatherAdapter2.ViewHolder> {
 
     private ModelWeather[] items;
 
     // 생성자
-    public WeatherAdapter(ModelWeather[] items) {
+    public WeatherAdapter2(ModelWeather[] items) {
         this.items = items;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_weather1, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_weather2, parent, false);
         return new ViewHolder(itemView);
     }
 

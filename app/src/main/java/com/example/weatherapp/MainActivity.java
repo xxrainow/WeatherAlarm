@@ -1,5 +1,8 @@
 package com.example.weatherapp;
 
+import static com.example.weatherapp.currentlocation.Common.getBaseTime;
+
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +16,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weatherapp.adapter.WeatherAdapter;
+import com.example.weatherapp.adapter.WeatherAdapter2;
 import com.example.weatherapp.api.ApiObject;
+import com.example.weatherapp.api.BODY;
 import com.example.weatherapp.api.ITEM;
+import com.example.weatherapp.api.ITEMS;
 import com.example.weatherapp.api.WEATHER;
+import com.example.weatherapp.currentlocation.Common;
 import com.example.weatherapp.data.ModelWeather;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,33 +42,33 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView weatherRecyclerView;
+    private RecyclerView weatherRecyclerView1; // 날씨 리사이클러 뷰(가로 슬라이드)
+    private RecyclerView weatherRecyclerView2; // 날씨 리사이클러 뷰(세로 슬라이드)
+    private TextView todayDate;
 
-    private String base_date = "20210510";  // 발표 일자
+    private String base_date = "20241128";  // 발표 일자
     private String base_time = "1400";      // 발표 시각
-    private String nx = "55";               // 예보지점 X 좌표
-    private String ny = "127";              // 예보지점 Y 좌표
+    private Point curPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView todayDate = findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
-        weatherRecyclerView = findViewById(R.id.weatherRecyclerView); // 날씨 리사이클러 뷰
+        todayDate = findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
+        weatherRecyclerView1 = findViewById(R.id.weatherRecyclerView1); // 날씨 리사이클러 뷰1
+        weatherRecyclerView2 = findViewById(R.id.weatherRecyclerView2); // 날씨 리사이클러 뷰2
         Button btnRefresh = findViewById(R.id.btnRefresh); // 새로고침 버튼
 
         // 리사이클러 뷰 레이아웃 매니저 설정
-        weatherRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        weatherRecyclerView1.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        weatherRecyclerView2.setLayoutManager(new LinearLayoutManager(this));
 
-        // 오늘 날짜 텍스트뷰 설정
-        todayDate.setText(new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
-
-        // nx, ny 지점의 날씨 가져와서 설정하기
-        setWeather(nx, ny);
+        // 내 위치 위경도 가져와서 날씨 정보 설정 setWeather(nx, ny)와 동일
+        requestLocation();
 
         // 새로고침 버튼 클릭 시 날씨 정보 다시 가져오기
-        btnRefresh.setOnClickListener(v -> setWeather(nx, ny));
+        btnRefresh.setOnClickListener(v -> requestLocation());
     }
 
     // 날씨 정보 가져와서 설정하기
@@ -66,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         String timeH = new SimpleDateFormat("HH", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (시)
         String timeM = new SimpleDateFormat("mm", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (분)
 
-        // API 시간 변환
+        // API에 적합한 시간 변환
         base_time = getBaseTime(timeH, timeM);
 
         // 현재 시각이 00시이고 45분 이하면 base_time이 2330으로 어제 정보 가져오기
@@ -75,16 +88,44 @@ public class MainActivity extends AppCompatActivity {
             base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime());
         }
 
+        // 로그 출력: base_date, base_time, nx, ny 값 확인
+        Log.d("API Request", "base_date: " + base_date + ", base_time: " + base_time + ", nx: " + nx + ", ny: " + ny);
+
         // 날씨 정보 API 호출
         Call<WEATHER> call = ApiObject.retrofitService.getWeather(60, 1, "JSON", base_date, base_time, nx, ny);
 
-        // 비동기적으로 실행
+        // 로그 출력: 요청 URL 확인
+        Log.d("API Request", "Request URL: " + call.request().url());
+
+        // 비동기적으로 API 호출
         call.enqueue(new Callback<WEATHER>() {
             // API 호출 성공 시
             @Override
             public void onResponse(@NonNull Call<WEATHER> call, @NonNull Response<WEATHER> response) {
                 if (response.isSuccessful() && response.body() != null) { // response.body(): 응답 본체, 여기서 날씨 데이터가 포함된 ITEM 객체 리스트
-                    List<ITEM> items = response.body().getResponse().getBody().getItems().getItem();
+                    // 응답 본체를 JSON 형식으로 로그에 출력
+                    Log.d("API Response", new Gson().toJson(response.body()));
+
+                    // List<ITEM> items = response.body().getResponse().getBody().getItems().getItem();
+
+                    // API 응답을 안전하게 가져오기
+                    BODY body = response.body().getResponse().getBody();
+                    if (body == null) {
+                        Log.e("API Error", "Response body is null");
+                        Toast.makeText(getApplicationContext(), "날씨 정보를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        return; // 더 이상 진행하지 않고 종료
+                    }
+
+                    // items가 null인지 확인
+                    ITEMS items = body.getItems();
+                    if (items == null || items.getItem() == null) {
+                        Log.e("API Error", "Items are null");
+                        Toast.makeText(getApplicationContext(), "날씨 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return; // 더 이상 진행하지 않고 종료
+                    }
+
+                    // 날씨 데이터 처리
+                    List<ITEM> itemList = items.getItem();
 
                     // weatherList : 현재 시각부터 1시간 뒤의 날씨 6개를 담을 리스트
                     List<ModelWeather> weatherList = new ArrayList<>();
@@ -97,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                     int totalCount = response.body().getResponse().getBody().getTotalCount();
                     for (int i = 0; i < totalCount; i++) {
                         index %= 6; // 인덱스를 0~5로 제한
-                        ITEM item = items.get(i);
+                        ITEM item = itemList.get(i);
 
                         switch (item.getCategory()) {
                             case "PTY": // 강수 형태
@@ -120,49 +161,67 @@ public class MainActivity extends AppCompatActivity {
 
                     // 각 날짜 배열 시간 설정
                     for (int i = 0; i < 6; i++) {
-                        weatherList.get(i).setFcstTime(items.get(i).getFcstTime());
+                        weatherList.get(i).setFcstTime(itemList.get(i).getFcstTime());
                     }
 
                     // RecyclerView에 데이터 연결해서 날씨 정보 표시
-                    weatherRecyclerView.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));
+                    //weatherRecyclerView.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));
+
+                    // RecyclerView에 어댑터 연결
+                    weatherRecyclerView1.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));
+                    weatherRecyclerView2.setAdapter(new WeatherAdapter2(weatherList.toArray(new ModelWeather[0])));
 
                     // 토스트 메시지 표시
                     Toast.makeText(getApplicationContext(),
-                            items.get(0).getFcstDate() + ", " + items.get(0).getFcstTime() + "의 날씨 정보입니다.",
+                            itemList.get(0).getFcstDate() + ", " + itemList.get(0).getFcstTime() + "의 날씨 정보입니다.",
                             Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("API Error", "Response is not successful");
+                    Toast.makeText(getApplicationContext(), "API 호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             // API 호출 실패 시
             @Override
             public void onFailure(@NonNull Call<WEATHER> call, @NonNull Throwable t) {
-                TextView tvError = findViewById(R.id.todayError);
-                tvError.setText("API 호출 실패: " + t.getMessage() + "\n 다시 시도해주세요.");
-                tvError.setVisibility(View.VISIBLE);
+                TextView todayError = findViewById(R.id.todayError);
+                todayError.setText("API 호출 실패: " + t.getMessage() + "\n 다시 시도해주세요.");
+                todayError.setVisibility(View.VISIBLE);
                 Log.e("API Fail", t.getMessage());
             }
         });
     }
 
-    // baseTime 설정하기
-    private String getBaseTime(String h, String m) {
-        String result;
+    // 내 현재 위치의 위경도를 격자 좌표로 변환하여 해당 위치의 날씨정보 설정하기
+    private void requestLocation() {
+        // 사용자 위치 정보 계산
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // 45분 전이면
-        if (Integer.parseInt(m) < 45) {
-            // 0시면 2330
-            if (h.equals("00")) {
-                result = "2330";
-            } else {
-                // 1시간 전 시간 계산
-                int resultH = Integer.parseInt(h) - 1;
-                result = (resultH < 10 ? "0" : "") + resultH + "30"; // 2자리로 맞추기
-            }
-        } else {
-            // 45분 이후 바로 정보 가져오기
-            result = h + "30";
+        try{
+            // 현재 위치 요청
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(60*1000); // 요청 간격 1분
+
+            LocationCallback locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    for (android.location.Location location : locationResult.getLocations()) {
+                        // 현재 위치의 위경도를 격자좌표로 변환
+                        curPoint = Common.dfs_xy_conv(location.getLatitude(), location.getLongitude());
+
+                        // 오늘 날짜 텍스트뷰 설정
+                        todayDate.setText(new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+
+                        // nx, ny 지점의 날씨 가져오기
+                        setWeather(String.valueOf(curPoint.x), String.valueOf(curPoint.y));
+                    }
+                }
+            };
+            // 위치 요청 시작
+            locationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
-
-        return result;
     }
 }
