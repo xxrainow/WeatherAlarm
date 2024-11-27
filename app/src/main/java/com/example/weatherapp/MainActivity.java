@@ -80,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 비동기적으로 실행
         call.enqueue(new Callback<WEATHER>() {
+            // API 호출 성공 시
             @Override
             public void onResponse(@NonNull Call<WEATHER> call, @NonNull Response<WEATHER> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) { // response.body(): 응답 본체, 여기서 날씨 데이터가 포함된 ITEM 객체 리스트
                     List<ITEM> items = response.body().getResponse().getBody().getItems().getItem();
 
-                    // 현재 시각부터 1시간 뒤의 날씨 6개를 담을 리스트
+                    // weatherList : 현재 시각부터 1시간 뒤의 날씨 6개를 담을 리스트
                     List<ModelWeather> weatherList = new ArrayList<>();
                     for (int i = 0; i < 6; i++) {
                         weatherList.add(new ModelWeather());
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     int index = 0;
                     int totalCount = response.body().getResponse().getBody().getTotalCount();
                     for (int i = 0; i < totalCount; i++) {
-                        index %= 6;
+                        index %= 6; // 인덱스를 0~5로 제한
                         ITEM item = items.get(i);
 
                         switch (item.getCategory()) {
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         weatherList.get(i).setFcstTime(items.get(i).getFcstTime());
                     }
 
-                    // RecyclerView에 데이터 연결
+                    // RecyclerView에 데이터 연결해서 날씨 정보 표시
                     weatherRecyclerView.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));
 
                     // 토스트 메시지 표시
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            // API 호출 실패 시
             @Override
             public void onFailure(@NonNull Call<WEATHER> call, @NonNull Throwable t) {
                 TextView tvError = findViewById(R.id.todayError);

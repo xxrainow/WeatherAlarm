@@ -45,6 +45,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    // 위치
+    // 위치를 가져오기 위한 라이브러리
     implementation("com.google.android.gms:play-services-location:19.0.1")
+
+    // 위치 찾기 권한 설정을 위한 라이브러리
+    implementation("io.github.ParkSangGwon:tedpermission:2.3.0")
 }
