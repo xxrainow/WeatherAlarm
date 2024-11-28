@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         todayDate = findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
         weatherRecyclerView1 = findViewById(R.id.weatherRecyclerView1); // 날씨 리사이클러 뷰1
         weatherRecyclerView2 = findViewById(R.id.weatherRecyclerView2); // 날씨 리사이클러 뷰2
-        Button btnRefresh = findViewById(R.id.btnRefresh); // 새로고침 버튼
+        ImageButton btnRefresh = findViewById(R.id.btnRefresh); // 새로고침 버튼
 
         // 리사이클러 뷰 레이아웃 매니저 설정
         weatherRecyclerView1.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -163,9 +164,6 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < 6; i++) {
                         weatherList.get(i).setFcstTime(itemList.get(i).getFcstTime());
                     }
-
-                    // RecyclerView에 데이터 연결해서 날씨 정보 표시
-                    //weatherRecyclerView.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));
 
                     // RecyclerView에 어댑터 연결
                     weatherRecyclerView1.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));

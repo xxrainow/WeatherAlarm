@@ -2,31 +2,33 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#C2E2E8"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="10dp"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:background="@drawable/recycler_background">
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="00시 날씨"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="24dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginBottom="5dp"/>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#ddeeff">
+        android:background="@drawable/recylcer_inner_background">
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="강수 형태"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 android:paddingRight="30dp"/>
             <TextView
@@ -34,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/white"
                 android:textSize="20dp"/>
         </TableRow>
         <TableRow>
@@ -41,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="습도"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 android:paddingRight="30dp"/>
             <TextView
@@ -48,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/white"
                 android:textSize="20dp"/>
         </TableRow>
         <TableRow>
@@ -55,6 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="하늘 상태"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 android:paddingRight="30dp"/>
             <TextView
@@ -62,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/white"
                 android:textSize="20dp"/>
         </TableRow>
         <TableRow>
@@ -69,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="기온"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 android:paddingRight="30dp"/>
             <TextView
@@ -76,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/white"
                 android:textSize="20dp"/>
         </TableRow>
         <TableRow>
@@ -83,6 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="옷 추천"
+                android:textColor="@color/white"
                 android:textSize="20dp"
                 android:paddingRight="30dp"/>
             <TextView
@@ -90,6 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:textColor="@color/white"
                 android:textSize="20dp"/>
         </TableRow>
     </TableLayout>

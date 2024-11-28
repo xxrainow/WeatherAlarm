@@ -50,6 +50,10 @@ public class ModelWeather {
     }
 
     public String getFcstTime() {
+        // 예보 시각을 "HHmm"에서 "HH:mm" 형식으로 변환
+        if (fcstTime != null && fcstTime.length() == 4) {
+            return fcstTime.substring(0, 2) + "시";
+        }
         return fcstTime;
     }
 
