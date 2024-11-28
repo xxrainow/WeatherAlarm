@@ -4,144 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_main"
     tools:context=".MainActivity">
 
-    <!-- 스크롤 가능한 콘텐츠 -->
-    <ScrollView
-        android:id="@+id/scrollView"
+    <!-- Fragment Container -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNavigationBar">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="20dp">
-
-            <!-- 위치 텍스트 -->
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Seoul, Korea"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <!-- 날씨 이미지 및 온도 -->
-            <ImageView
-                android:id="@+id/imgWeather"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/sun_cloud" />
-
-            <!-- 온도 정보 -->
-            <TextView
-                android:id="@+id/tvTemperature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="29°C"
-                android:textColor="@color/white"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                android:layout_marginTop="10dp" />
-
-            <TextView
-                android:id="@+id/todayDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="mm/dd의 날씨"
-                android:textSize="30dp"
-                android:textColor="@color/black"
-                android:layout_margin="10dp"
-                android:gravity="center" />
-
-            <!-- 날씨 설명 -->
-            <TextView
-                android:id="@+id/tvWeatherDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expect high rain today."
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:layout_marginTop="5dp" />
-
-            <!-- 날씨 세부 정보 (풍속, 습도 등) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="15dp">
-
-                <TextView
-                    android:id="@+id/tvWindSpeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="11km/hr"
-                    android:textColor="@color/white"
-                    android:layout_marginEnd="20dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvHumidity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="02%"
-                    android:textColor="@color/white"
-                    android:layout_marginEnd="20dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvSunlight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="8hr"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/todayError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="에러 : "
-                android:textSize="30dp"
-                android:textColor="@color/black"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:visibility="gone" />
-
-            <!-- Hourly Forecast RecyclerView -->
-            <TextView
-                android:id="@+id/tvHourlyForecast"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hourly Forecast"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/weatherRecyclerView1"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/weatherRecyclerView2"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_above="@+id/bottomNavigationBar"
+        tools:layout="@layout/fragment_home" />
 
     <!-- 하단 네비게이션 바 -->
     <LinearLayout
@@ -154,45 +25,45 @@
         android:layout_alignParentBottom="true">
 
         <!-- 네비게이션 버튼들 -->
-        <ImageView
-            android:id="@+id/navHome"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="15dp"
-            android:src="@drawable/nav_home" />
-
-        <ImageView
-            android:id="@+id/navSearch"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="15dp"
-            android:src="@drawable/nav_clothes" />
-
-        <!-- 새로고침 버튼 -->
         <ImageButton
-            android:id="@+id/btnRefresh"
+            android:id="@+id/navHome"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:text="새로고침"
-            android:textColor="@color/white"
             android:layout_margin="15dp"
-            android:background="@drawable/refresh_button" />
+            android:src="@drawable/nav_home"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:contentDescription="Navigate to Home"/>
 
-        <ImageView
+
+        <ImageButton
+            android:id="@+id/navClothes"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
+            android:src="@drawable/nav_clothes"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:contentDescription="Navigate to Clothes"/>
+
+        <ImageButton
             android:id="@+id/navNotification"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_margin="15dp"
-            android:src="@drawable/nav_notification" />
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/nav_notification"
+            android:contentDescription="Navigate to notification"/>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/navMap"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_margin="15dp"
-            android:src="@drawable/nav_map" />
-
-
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/nav_map"
+            android:contentDescription="Navigate to Map"/>
     </LinearLayout>
 </RelativeLayout>
