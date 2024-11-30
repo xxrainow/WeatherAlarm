@@ -1,5 +1,8 @@
 package com.example.weatherapp.fragment;
 
+import static com.example.weatherapp.adapter.WeatherAdapter.getRainType;
+import static com.example.weatherapp.adapter.WeatherAdapter.getSky;
+import static com.example.weatherapp.adapter.WeatherAdapter.getWeatherImage;
 import static com.example.weatherapp.currentlocation.Common.getBaseTime;
 import static com.example.weatherapp.utils.Constants.WEATHER_COUNT;
 
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +55,14 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
     private RecyclerView weatherRecyclerView1; // 날씨 리사이클러 뷰(가로 슬라이드)
     private RecyclerView weatherRecyclerView2; // 날씨 리사이클러 뷰(세로 슬라이드)
+
     private TextView todayDate;
+    private ImageView imgWeather;
+    private TextView tvTemperature;
+    private TextView tvRainType; // 강수 형태
+    private TextView tvHumidity;
+    private TextView tvSky; // 하늘 상태
+
 
     private String base_date = "20241130";  // 발표 일자
     private String base_time = "2000";      // 발표 시각
@@ -65,9 +76,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // fragment_home.xml 레이아웃 inflate
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-
         todayDate = rootView.findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
+        imgWeather = rootView.findViewById(R.id.imgWeather);
+        tvTemperature = rootView.findViewById(R.id.tvTemperature);
+        tvRainType = rootView.findViewById(R.id.tvRainType); // 강수 형태 텍스트뷰
+        tvHumidity = rootView.findViewById(R.id.tvHumidity); // 습도 텍스트뷰
+        tvSky = rootView.findViewById(R.id.tvSky); // 하늘 상태 텍스트뷰
+
         btnRefresh = rootView.findViewById(R.id.btnRefresh); // 새로고침 버튼
         weatherRecyclerView1 = rootView.findViewById(R.id.weatherRecyclerView1); // 날씨 리사이클러 뷰1
         weatherRecyclerView2 = rootView.findViewById(R.id.weatherRecyclerView2); // 날씨 리사이클러 뷰2
@@ -83,6 +98,9 @@ public class HomeFragment extends Fragment {
         // 내 위치 위경도 가져와서 날씨 정보 설정 setWeather(nx, ny)와 동일
         requestLocation();
 
+
+
+
         // 새로고침 버튼 클릭 시 날씨 정보 다시 가져오기
         btnRefresh.setOnClickListener(v ->
                 {
@@ -95,13 +113,15 @@ public class HomeFragment extends Fragment {
 
     // 날씨 정보 가져와서 설정하기
     private void setWeather(String nx, String ny) {
-        // 준비 단계: base_date(발표 일자), base_time(발표 시각)
+        // base_date(발표 일자), base_time(발표 시각)
         Calendar cal = Calendar.getInstance();
-        //base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
         String timeH = new SimpleDateFormat("HH", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (시)
         String timeM = new SimpleDateFormat("mm", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (분)
 
-        // API에 적합한 시간 변환
+
+
+        //주석 해제하기
+        //base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
         //base_time = getBaseTime(timeH, timeM);
 
         // 현재 시각이 00시이고 45분 이하면 base_time이 2330으로 어제 정보 가져오기
@@ -110,17 +130,17 @@ public class HomeFragment extends Fragment {
             base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime());
         }
 
+        // 식제해야됨
+        base_date = "20241130";
+        base_time = "2000"; // 발표 시각 초기화
+
         // 로그 출력: base_date, base_time, nx, ny 값 확인
         Log.d("API Request", "base_date: " + base_date + ", base_time: " + base_time + ", nx: " + nx + ", ny: " + ny);
 
         // 날씨 정보 API 호출
         Call<WEATHER> call = ApiObject.retrofitService.getWeather(60, 1, "JSON", base_date, base_time, nx, ny);
-
         // 로그 출력: 요청 URL 확인
         Log.d("API Request", "Request URL: " + call.request().url());
-
-        base_date = "20241130";
-        base_time = "2000"; // 발표 시각 초기화
 
         // 비동기적으로 API 호출
         call.enqueue(new Callback<WEATHER>() {
@@ -147,8 +167,9 @@ public class HomeFragment extends Fragment {
                         return; // 더 이상 진행하지 않고 종료
                     }
 
-                    // 날씨 데이터 처리
+                    // itemList : 날씨 데이터 처리
                     List<ITEM> itemList = items.getItem();
+
 
                     // weatherList : 현재 시각부터 1시간 뒤의 날씨 6개를 담을 리스트
                     List<ModelWeather> weatherList = new ArrayList<>();
@@ -156,7 +177,7 @@ public class HomeFragment extends Fragment {
                         weatherList.add(new ModelWeather());
                     }
 
-                    // 리스트 데이터 채우기
+                    // WeatherList 데이터 채우기
                     int index = 0;
                     int totalCount = response.body().getResponse().getBody().getTotalCount();
                     for (int i = 0; i < totalCount; i++) {
@@ -176,11 +197,44 @@ public class HomeFragment extends Fragment {
                             case "T1H": // 기온
                                 weatherList.get(index).setTemp(item.getFcstValue());
                                 break;
+                            case "RN1": // 강수량
+                                weatherList.get(index).setRain(item.getFcstValue());
+                                break;
                             default:
                                 continue;
                         }
                         index++;
                     }
+
+                    // 첫 번째 데이터 가져오기
+                    if (!weatherList.isEmpty()) {
+                        ModelWeather firstWeather = weatherList.get(0);
+                        String rainType = firstWeather.getRainType();
+                        String temp = firstWeather.getTemp();
+                        String humidity = firstWeather.getHumidity();
+                        String sky = firstWeather.getSky();
+
+                        Log.d("FirstWeatherData", "RainType: " + rainType + ", Temp: " + temp +
+                                ", Humidity: " + humidity + ", Sky: " + sky);
+
+                        for (ITEM item : itemList) {
+                            Log.d("API Response Item", "Category: " + item.getCategory() + ", FcstValue: " + item.getFcstValue());
+                        }
+
+
+                        // 날씨 정보를 텍스트뷰에 반영
+                        imgWeather.setImageResource(getWeatherImage(sky));
+                        tvTemperature.setText("온도: " + temp + "°C"); // 온도
+                        tvRainType.setText("강수 형태: " + getRainType(rainType)); // 강수 형태
+                        tvHumidity.setText("습도: " + humidity + "%");
+                        tvSky.setText("하늘 상태: " + getSky(sky));
+
+
+                    }
+
+
+                    todayDate.setText(new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+
 
                     // 각 날짜 배열 시간 설정
                     for (int i = 0; i < WEATHER_COUNT; i++) {

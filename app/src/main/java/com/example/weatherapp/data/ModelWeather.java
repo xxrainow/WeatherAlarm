@@ -6,6 +6,7 @@ public class ModelWeather {
     private String sky;        // 하늘 상태
     private String temp;       // 기온
     private String fcstTime;   // 예보 시각
+    private String rain;       // 강수량
 
     // 기본 생성자
     public ModelWeather() {
@@ -14,6 +15,7 @@ public class ModelWeather {
         this.sky = "";
         this.temp = "";
         this.fcstTime = "";
+        this.rain = "";
     }
 
     // Getter 및 Setter
@@ -49,6 +51,14 @@ public class ModelWeather {
         this.temp = temp;
     }
 
+    public void setRain(String rain) {
+        this.rain = rain;
+    }
+
+    public String getRain() {
+        return rainType;
+    }
+
     public String getFcstTime() {
         // 예보 시각을 "HHmm"에서 "HH:mm" 형식으로 변환
         if (fcstTime != null && fcstTime.length() == 4) {
@@ -61,6 +71,7 @@ public class ModelWeather {
         this.fcstTime = fcstTime;
     }
 
+
     @Override
     public String toString() {
         return "ModelWeather{" +
@@ -69,6 +80,7 @@ public class ModelWeather {
                 ", sky='" + sky + '\'' +
                 ", temp='" + temp + '\'' +
                 ", fcstTime='" + fcstTime + '\'' +
+                ", rain='" + rain + '\'' +
                 '}';
     }
 }

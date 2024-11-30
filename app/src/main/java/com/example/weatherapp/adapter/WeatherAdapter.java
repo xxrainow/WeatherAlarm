@@ -63,7 +63,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     }
 
     // 강수 형태
-    private String getRainType(String rainType) {
+    public static String getRainType(String rainType) {
         switch (rainType) {
             case "0":
                 return "없음";
@@ -73,13 +73,19 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
                 return "비/눈";
             case "3":
                 return "눈";
+            case "5":
+                return "빗방울";
+            case "6":
+                return "빗방울/눈날림";
+            case "7":
+                return "눈날림";
             default:
                 return "오류 rainType: " + rainType;
         }
     }
 
     // 하늘 상태
-    private String getSky(String sky) {
+    public static String getSky(String sky) {
         switch (sky) {
             case "1":
                 return "맑음";
@@ -92,7 +98,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
     }
 
-    private int getWeatherImage(String sky) {
+    public static int getWeatherImage(String sky) {
         // 하늘 상태에 따라 이미지 반환
         switch (sky) {
             case "1": // 맑음

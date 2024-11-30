@@ -50,7 +50,19 @@
                 android:text="Seoul, Korea"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/todayDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="##/##의 날씨"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:textStyle="bold"/>
 
             <!-- 날씨 이미지 및 온도 -->
             <ImageView
@@ -65,63 +77,43 @@
                 android:id="@+id/tvTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="29°C"
+                android:text="##°C"
                 android:textColor="@color/white"
                 android:textSize="36sp"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp" />
 
-            <TextView
-                android:id="@+id/todayDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="mm/dd의 날씨"
-                android:textSize="30dp"
-                android:textColor="@color/black"
-                android:layout_margin="10dp"
-                android:gravity="center" />
-
-            <!-- 날씨 설명 -->
-            <TextView
-                android:id="@+id/tvWeatherDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expect high rain today."
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:layout_marginTop="5dp" />
 
             <!-- 날씨 세부 정보 (풍속, 습도 등) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:gravity="center"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp">
 
                 <TextView
-                    android:id="@+id/tvWindSpeed"
+                    android:id="@+id/tvRainType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="11km/hr"
+                    android:text="강수 형태 : ##"
                     android:textColor="@color/white"
-                    android:layout_marginEnd="20dp"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvHumidity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="02%"
+                    android:text="습도 : ##%"
                     android:textColor="@color/white"
-                    android:layout_marginEnd="20dp"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tvSunlight"
+                    android:id="@+id/tvSky"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="8hr"
+                    android:text="하늘 상태 : ##"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -153,13 +145,15 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/weatherRecyclerView2"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
     </ScrollView>
 
