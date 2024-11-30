@@ -1,6 +1,7 @@
 package com.example.weatherapp.fragment;
 
 import static com.example.weatherapp.currentlocation.Common.getBaseTime;
+import static com.example.weatherapp.utils.Constants.WEATHER_COUNT;
 
 import android.graphics.Point;
 import android.os.Bundle;
@@ -52,8 +53,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView weatherRecyclerView2; // 날씨 리사이클러 뷰(세로 슬라이드)
     private TextView todayDate;
 
-    private String base_date = "20241128";  // 발표 일자
-    private String base_time = "1400";      // 발표 시각
+    private String base_date = "20241130";  // 발표 일자
+    private String base_time = "2000";      // 발표 시각
     private Point curPoint;
 
     private View rootView;
@@ -67,9 +68,13 @@ public class HomeFragment extends Fragment {
 
 
         todayDate = rootView.findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
+        btnRefresh = rootView.findViewById(R.id.btnRefresh); // 새로고침 버튼
         weatherRecyclerView1 = rootView.findViewById(R.id.weatherRecyclerView1); // 날씨 리사이클러 뷰1
         weatherRecyclerView2 = rootView.findViewById(R.id.weatherRecyclerView2); // 날씨 리사이클러 뷰2
-        btnRefresh = rootView.findViewById(R.id.btnRefresh); // 새로고침 버튼
+
+        // 비어 있는 데이터를 가진 기본 어댑터를 설정(No adapter attached; skipping layout 에러 해결)
+        weatherRecyclerView1.setAdapter(new WeatherAdapter(new ModelWeather[0]));
+        weatherRecyclerView2.setAdapter(new WeatherAdapter2(new ModelWeather[0]));
 
         // 리사이클러 뷰 레이아웃 매니저 설정
         weatherRecyclerView1.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -85,7 +90,6 @@ public class HomeFragment extends Fragment {
                     Log.d("RefreshButton", "새로고침 버튼 클릭됨");
                     Toast.makeText(getContext(), "날씨 정보를 새로고침합니다.", Toast.LENGTH_SHORT).show();
                 });
-
         return rootView;
     }
 
@@ -93,12 +97,12 @@ public class HomeFragment extends Fragment {
     private void setWeather(String nx, String ny) {
         // 준비 단계: base_date(발표 일자), base_time(발표 시각)
         Calendar cal = Calendar.getInstance();
-        base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
+        //base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
         String timeH = new SimpleDateFormat("HH", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (시)
         String timeM = new SimpleDateFormat("mm", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (분)
 
         // API에 적합한 시간 변환
-        base_time = getBaseTime(timeH, timeM);
+        //base_time = getBaseTime(timeH, timeM);
 
         // 현재 시각이 00시이고 45분 이하면 base_time이 2330으로 어제 정보 가져오기
         if (timeH.equals("00") && base_time.equals("2330")) {
@@ -115,6 +119,9 @@ public class HomeFragment extends Fragment {
         // 로그 출력: 요청 URL 확인
         Log.d("API Request", "Request URL: " + call.request().url());
 
+        base_date = "20241130";
+        base_time = "2000"; // 발표 시각 초기화
+
         // 비동기적으로 API 호출
         call.enqueue(new Callback<WEATHER>() {
             // API 호출 성공 시
@@ -123,8 +130,6 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) { // response.body(): 응답 본체, 여기서 날씨 데이터가 포함된 ITEM 객체 리스트
                     // 응답 본체를 JSON 형식으로 로그에 출력
                     Log.d("API Response", new Gson().toJson(response.body()));
-
-                    // List<ITEM> items = response.body().getResponse().getBody().getItems().getItem();
 
                     // API 응답을 안전하게 가져오기
                     BODY body = response.body().getResponse().getBody();
@@ -147,7 +152,7 @@ public class HomeFragment extends Fragment {
 
                     // weatherList : 현재 시각부터 1시간 뒤의 날씨 6개를 담을 리스트
                     List<ModelWeather> weatherList = new ArrayList<>();
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < WEATHER_COUNT; i++) {
                         weatherList.add(new ModelWeather());
                     }
 
@@ -155,7 +160,7 @@ public class HomeFragment extends Fragment {
                     int index = 0;
                     int totalCount = response.body().getResponse().getBody().getTotalCount();
                     for (int i = 0; i < totalCount; i++) {
-                        index %= 6; // 인덱스를 0~5로 제한
+                        index %= WEATHER_COUNT; // 인덱스를 0~5로 제한
                         ITEM item = itemList.get(i);
 
                         switch (item.getCategory()) {
@@ -178,7 +183,7 @@ public class HomeFragment extends Fragment {
                     }
 
                     // 각 날짜 배열 시간 설정
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < WEATHER_COUNT; i++) {
                         weatherList.get(i).setFcstTime(itemList.get(i).getFcstTime());
                     }
 
