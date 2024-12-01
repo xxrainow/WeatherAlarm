@@ -3,7 +3,7 @@ package com.example.weatherapp.fragment;
 import static com.example.weatherapp.adapter.WeatherAdapter.getRainType;
 import static com.example.weatherapp.adapter.WeatherAdapter.getSky;
 import static com.example.weatherapp.adapter.WeatherAdapter.getWeatherImage;
-import static com.example.weatherapp.currentlocation.Common.getBaseTime;
+import static com.example.weatherapp.utils.currentlocation.Common.getBaseTime;
 import static com.example.weatherapp.utils.Constants.WEATHER_COUNT;
 
 import android.graphics.Point;
@@ -13,14 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +31,8 @@ import com.example.weatherapp.api.BODY;
 import com.example.weatherapp.api.ITEM;
 import com.example.weatherapp.api.ITEMS;
 import com.example.weatherapp.api.WEATHER;
-import com.example.weatherapp.currentlocation.Common;
+import com.example.weatherapp.api.WeatherApiService;
+import com.example.weatherapp.utils.currentlocation.Common;
 import com.example.weatherapp.data.ModelWeather;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -62,7 +61,6 @@ public class HomeFragment extends Fragment {
     private TextView tvRainType; // 강수 형태
     private TextView tvHumidity;
     private TextView tvSky; // 하늘 상태
-
 
     private String base_date = "20241130";  // 발표 일자
     private String base_time = "2000";      // 발표 시각
@@ -98,21 +96,69 @@ public class HomeFragment extends Fragment {
         // 내 위치 위경도 가져와서 날씨 정보 설정 setWeather(nx, ny)와 동일
         requestLocation();
 
-
-
-
         // 새로고침 버튼 클릭 시 날씨 정보 다시 가져오기
-        btnRefresh.setOnClickListener(v ->
-                {
+        btnRefresh.setOnClickListener(v -> {
                     requestLocation();
-                    //Log.d("RefreshButton", "새로고침 버튼 클릭됨");
                     Toast.makeText(getContext(), "날씨 정보를 새로고침합니다.", Toast.LENGTH_SHORT).show();
                 });
         return rootView;
     }
 
+    // 날씨 정보를 업데이트하는 메서드
+    public void updateWeatherView(String rainType, String temp, String humidity, String sky) {
+        imgWeather.setImageResource(getWeatherImage(sky));
+        tvTemperature.setText("온도: " + temp + "°C");
+        tvRainType.setText("강수 형태: " + getRainType(rainType));
+        tvHumidity.setText("습도: " + humidity + "%");
+        tvSky.setText("하늘 상태: " + getSky(sky));
+
+        todayDate.setText(new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+
+    }
+
+    // RecyclerView에 어댑터 설정
+    public void updateRecyclerView(List<ModelWeather> weatherList) {
+        weatherRecyclerView1.setAdapter(new WeatherAdapter(weatherList.toArray(new ModelWeather[0])));
+        weatherRecyclerView2.setAdapter(new WeatherAdapter2(weatherList.toArray(new ModelWeather[0])));
+    }
+
+    // 내 현재 위치의 위경도를 격자 좌표로 변환하여 해당 위치의 날씨정보 설정하기
+    private void requestLocation() {
+        // 사용자 위치 정보 계산
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        try{
+            // 현재 위치 요청
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(60*1000); // 요청 간격 1분
+
+            LocationCallback locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    for (android.location.Location location : locationResult.getLocations()) {
+                        // 현재 위치의 위경도를 격자좌표로 변환
+                        curPoint = Common.dfs_xy_conv(location.getLatitude(), location.getLongitude());
+                        Log.d("LocationResult", "위도: " + location.getLatitude() + ", 경도: " + location.getLongitude());
+
+                        // 오늘 날짜 텍스트뷰 설정
+                        todayDate.setText(new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+
+                        // nx, ny 지점의 날씨 가져오기
+                        WeatherApiService.fetchWeather(getContext(), String.valueOf(curPoint.x), String.valueOf(curPoint.y), HomeFragment.this);
+                    }
+                }
+            };
+            // 위치 요청 시작
+            locationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+        } catch (SecurityException e) {
+            Log.e("RequestLocation", "위치 권한 오류: " + e.getMessage());
+        }
+    }
+}
+
     // 날씨 정보 가져와서 설정하기
-    private void setWeather(String nx, String ny) {
+    /*private void setWeather(String nx, String ny) {
         // base_date(발표 일자), base_time(발표 시각)
         Calendar cal = Calendar.getInstance();
         String timeH = new SimpleDateFormat("HH", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (시)
@@ -131,8 +177,8 @@ public class HomeFragment extends Fragment {
         }
 
         // 식제해야됨
-//        /*base_date = "20241130";
-//        base_time = "2000"; // 발표 시각 초기화*/
+        // base_date = "20241130";
+        // base_time = "2000"; // 발표 시각 초기화
 
         // 로그 출력: base_date, base_time, nx, ny 값 확인
         //Log.d("API Request", "base_date: " + base_date + ", base_time: " + base_time + ", nx: " + nx + ", ny: " + ny);
@@ -214,14 +260,6 @@ public class HomeFragment extends Fragment {
                         String humidity = firstWeather.getHumidity();
                         String sky = firstWeather.getSky();
 
-                        //Log.d("FirstWeatherData", "RainType: " + rainType + ", Temp: " + temp +
-                        //        ", Humidity: " + humidity + ", Sky: " + sky);
-
-                        /*for (ITEM item : itemList) {
-                            Log.d("API Response Item", "Category: " + item.getCategory() + ", FcstValue: " + item.getFcstValue());
-                        }*/
-
-
                         // 날씨 정보를 텍스트뷰에 반영
                         imgWeather.setImageResource(getWeatherImage(sky));
                         tvTemperature.setText("온도: " + temp + "°C"); // 온도
@@ -231,8 +269,6 @@ public class HomeFragment extends Fragment {
 
 
                     }
-
-
                     todayDate.setText(new SimpleDateFormat("MM월 dd일", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
 
 
@@ -267,10 +303,10 @@ public class HomeFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-    }
+    }*/
 
     // 내 현재 위치의 위경도를 격자 좌표로 변환하여 해당 위치의 날씨정보 설정하기
-    private void requestLocation() {
+    /*private void requestLocation() {
         // 사용자 위치 정보 계산
         FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
@@ -301,5 +337,5 @@ public class HomeFragment extends Fragment {
         } catch (SecurityException e) {
             Log.e("RequestLocation", "위치 권한 오류: " + e.getMessage());
         }
-    }
-}
+    }*/
+

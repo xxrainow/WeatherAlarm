@@ -1,4 +1,4 @@
-package com.example.weatherapp.currentlocation;
+package com.example.weatherapp.utils.currentlocation;
 
 import android.graphics.Point;
 import android.util.Log;
