@@ -2,7 +2,6 @@ package com.example.weatherapp;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -37,13 +36,17 @@ public class MainActivity extends AppCompatActivity {
         navClothes.setOnClickListener(v -> replaceFragment(new RecommendationFragment()));
         navNotification.setOnClickListener(v -> replaceFragment(new NotificationFragment()));
         navMap.setOnClickListener(v -> replaceFragment(new MapFragment()));
+
+
     }
 
     // Fragment 교체 메서드
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragmentContainer, fragment);
+        transaction.replace(R.id.fragmentHomeContainer, fragment);
         transaction.commit();
     }
+
+
 }

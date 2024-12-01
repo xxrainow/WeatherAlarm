@@ -52,6 +52,7 @@ public class WeatherAdapter2 extends RecyclerView.Adapter<WeatherAdapter2.ViewHo
             TextView tvTemp = itemView.findViewById(R.id.tvTemp);           // 온도
             TextView tvRecommends = itemView.findViewById(R.id.tvRecommends); // 옷 추천
 
+
             tvTime.setText(item.getFcstTime());
             tvRainType.setText(getRainType(item.getRainType()));
             tvHumidity.setText(item.getHumidity());
@@ -70,13 +71,19 @@ public class WeatherAdapter2 extends RecyclerView.Adapter<WeatherAdapter2.ViewHo
     private String getRainType(String rainType) {
         switch (rainType) {
             case "0":
-                return "없음";
+                return "-";
             case "1":
                 return "비";
             case "2":
                 return "비/눈";
             case "3":
                 return "눈";
+            case "5":
+                return "빗방울";
+            case "6":
+                return "빗방울/눈날림";
+            case "7":
+                return "눈날림";
             default:
                 return "오류 rainType: " + rainType;
         }

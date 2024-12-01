@@ -1,6 +1,7 @@
 package com.example.weatherapp.fragment;
 
 import static com.example.weatherapp.adapter.WeatherAdapter.getRainType;
+import static com.example.weatherapp.adapter.WeatherAdapter.getRainTypeImage;
 import static com.example.weatherapp.adapter.WeatherAdapter.getSky;
 import static com.example.weatherapp.adapter.WeatherAdapter.getWeatherImage;
 import static com.example.weatherapp.utils.currentlocation.Common.getBaseTime;
@@ -61,6 +62,7 @@ public class HomeFragment extends Fragment {
     private TextView tvRainType; // 강수 형태
     private TextView tvHumidity;
     private TextView tvSky; // 하늘 상태
+    private ImageView imgRainType;
 
     private String base_date = "20241130";  // 발표 일자
     private String base_time = "2000";      // 발표 시각
@@ -76,6 +78,10 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         todayDate = rootView.findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
         imgWeather = rootView.findViewById(R.id.imgWeather);
+
+
+        imgRainType = rootView.findViewById(R.id.imgRainType); // 강수 형태 이미지뷰
+
         tvTemperature = rootView.findViewById(R.id.tvTemperature);
         tvRainType = rootView.findViewById(R.id.tvRainType); // 강수 형태 텍스트뷰
         tvHumidity = rootView.findViewById(R.id.tvHumidity); // 습도 텍스트뷰
@@ -107,6 +113,7 @@ public class HomeFragment extends Fragment {
     // 날씨 정보를 업데이트하는 메서드
     public void updateWeatherView(String rainType, String temp, String humidity, String sky) {
         imgWeather.setImageResource(getWeatherImage(sky));
+        imgRainType.setImageResource(getRainTypeImage(rainType));
         tvTemperature.setText("온도: " + temp + "°C");
         tvRainType.setText("강수 형태: " + getRainType(rainType));
         tvHumidity.setText("습도: " + humidity + "%");

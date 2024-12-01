@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background_main">#3F51B5</color>
+    <color name="background_main">#6799FF</color>
     <color name="bottom_navigation_bar">#303F9F</color>
     <color name="recylerview_background">#3163C9</color>
     <color name="recylerview_inner_background">#4375DB</color>

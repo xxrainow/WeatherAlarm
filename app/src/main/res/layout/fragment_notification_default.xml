@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentNotificationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 제목과 추가 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="1dp"
+                android:text="날씨 알림"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+
+        <!-- 첫 번째 알림 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/rain_snow"
+                    android:contentDescription="시간" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="비/눈"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:layout_marginRight="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="3dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="오전 8:00"
+                            android:textStyle="bold"
+                            android:textColor="#000000"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="매일"
+                            android:textSize="14sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="message : 오늘은 비나 눈이 내려용"
+                android:textSize="16sp"
+                android:textColor="#333333"
+
+                android:drawablePadding="8dp"
+                android:paddingTop="8dp" />
+            <Button
+                android:id="@+id/btnAlarmEdit1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="수정하기"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:background="@drawable/small_rounded"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <!-- 두 번째 알림 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/small_rounded"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/low_temp"
+                    android:contentDescription="시간" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="영하"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:layout_marginRight="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="3dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="오전 8:00"
+                            android:textStyle="bold"
+                            android:textColor="#000000"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="매일"
+                            android:textSize="14sp"
+                            android:textColor="#666666" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="message : 오늘은 너무 추워용"
+                android:textSize="16sp"
+                android:textColor="#333333"
+
+                android:drawablePadding="8dp"
+                android:paddingTop="8dp" />
+            <Button
+                android:id="@+id/btnAlarmEdit2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="수정하기"
+                android:textSize="14sp"
+                android:textColor="#666666"
+                android:background="@drawable/small_rounded"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</RelativeLayout>

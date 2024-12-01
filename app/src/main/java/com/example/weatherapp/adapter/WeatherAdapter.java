@@ -47,6 +47,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
         public void setItem(ModelWeather item) {
             ImageView imgWeather = itemView.findViewById(R.id.imgWeather);
+            ImageView imgRainType = itemView.findViewById(R.id.imgRainType);
             TextView tvTime = itemView.findViewById(R.id.tvTime);           // 시각
             TextView tvRainType = itemView.findViewById(R.id.tvRainType);   // 강수 형태
             TextView tvHumidity = itemView.findViewById(R.id.tvHumidity);   // 습도
@@ -54,9 +55,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             TextView tvTemp = itemView.findViewById(R.id.tvTemp);           // 온도
 
             imgWeather.setImageResource(getWeatherImage(item.getSky()));
+            imgRainType.setImageResource(getRainTypeImage(item.getRainType()));
             tvTime.setText(item.getFcstTime());
             tvRainType.setText(getRainType(item.getRainType()));
-            tvHumidity.setText(item.getHumidity());
+            //tvHumidity.setText(item.getHumidity());
             tvSky.setText(getSky(item.getSky()));
             tvTemp.setText(item.getTemp() + "°");
         }
@@ -66,7 +68,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     public static String getRainType(String rainType) {
         switch (rainType) {
             case "0":
-                return "없음";
+                return "-";
             case "1":
                 return "비";
             case "2":
@@ -81,6 +83,28 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
                 return "눈날림";
             default:
                 return "오류 rainType: " + rainType;
+        }
+    }
+
+    public static int getRainTypeImage(String rainType) {
+        // 강수 형태에 따라 이미지 반환
+        switch (rainType) {
+            case "0": // 없음
+                return R.drawable.sun;
+            case "1": // 비
+                return R.drawable.rain;
+            case "2": // 비/눈
+                return R.drawable.rain_snow;
+            case "3": // 눈
+                return R.drawable.snow;
+            case "5": // 빗방울
+                return R.drawable.raindrop;
+            case "6": // 빗방울/눈날림
+                return R.drawable.raindrop_snow;
+            case "7": // 눈날림
+                return R.drawable.snowflake;
+            default: // 오류
+                return R.drawable.ic_launcher_foreground;
         }
     }
 
