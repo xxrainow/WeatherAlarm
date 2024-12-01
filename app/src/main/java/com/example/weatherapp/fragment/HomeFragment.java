@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
         btnRefresh.setOnClickListener(v ->
                 {
                     requestLocation();
-                    Log.d("RefreshButton", "새로고침 버튼 클릭됨");
+                    //Log.d("RefreshButton", "새로고침 버튼 클릭됨");
                     Toast.makeText(getContext(), "날씨 정보를 새로고침합니다.", Toast.LENGTH_SHORT).show();
                 });
         return rootView;
@@ -121,8 +121,8 @@ public class HomeFragment extends Fragment {
 
 
         //주석 해제하기
-        //base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
-        //base_time = getBaseTime(timeH, timeM);
+        base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
+        base_time = getBaseTime(timeH, timeM);
 
         // 현재 시각이 00시이고 45분 이하면 base_time이 2330으로 어제 정보 가져오기
         if (timeH.equals("00") && base_time.equals("2330")) {
@@ -131,11 +131,11 @@ public class HomeFragment extends Fragment {
         }
 
         // 식제해야됨
-        base_date = "20241130";
-        base_time = "2000"; // 발표 시각 초기화
+//        /*base_date = "20241130";
+//        base_time = "2000"; // 발표 시각 초기화*/
 
         // 로그 출력: base_date, base_time, nx, ny 값 확인
-        Log.d("API Request", "base_date: " + base_date + ", base_time: " + base_time + ", nx: " + nx + ", ny: " + ny);
+        //Log.d("API Request", "base_date: " + base_date + ", base_time: " + base_time + ", nx: " + nx + ", ny: " + ny);
 
         // 날씨 정보 API 호출
         Call<WEATHER> call = ApiObject.retrofitService.getWeather(60, 1, "JSON", base_date, base_time, nx, ny);
@@ -162,7 +162,7 @@ public class HomeFragment extends Fragment {
                     // items가 null인지 확인
                     ITEMS items = body.getItems();
                     if (items == null || items.getItem() == null) {
-                        Log.e("API Error", "Items are null");
+                        //Log.e("API Error", "Items are null");
                         Toast.makeText(getContext(), "날씨 데이터가 없습니다.", Toast.LENGTH_SHORT).show();
                         return; // 더 이상 진행하지 않고 종료
                     }
@@ -214,12 +214,12 @@ public class HomeFragment extends Fragment {
                         String humidity = firstWeather.getHumidity();
                         String sky = firstWeather.getSky();
 
-                        Log.d("FirstWeatherData", "RainType: " + rainType + ", Temp: " + temp +
-                                ", Humidity: " + humidity + ", Sky: " + sky);
+                        //Log.d("FirstWeatherData", "RainType: " + rainType + ", Temp: " + temp +
+                        //        ", Humidity: " + humidity + ", Sky: " + sky);
 
-                        for (ITEM item : itemList) {
+                        /*for (ITEM item : itemList) {
                             Log.d("API Response Item", "Category: " + item.getCategory() + ", FcstValue: " + item.getFcstValue());
-                        }
+                        }*/
 
 
                         // 날씨 정보를 텍스트뷰에 반영
@@ -250,7 +250,9 @@ public class HomeFragment extends Fragment {
                             itemList.get(0).getFcstDate() + ", " + itemList.get(0).getFcstTime() + "의 날씨 정보입니다.",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.e("API Error", "Response is not successful");
+                    // 응답 코드가 200번대가 아닌 경우
+                    Log.e("API Error", "응답 실패: " + response.code() + " - " + response.message());
+
                     Toast.makeText(getContext(), "API 호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -261,7 +263,8 @@ public class HomeFragment extends Fragment {
                 TextView todayError = rootView.findViewById(R.id.todayError);
                 todayError.setText("API 호출 실패: " + t.getMessage() + "\n 다시 시도해주세요.");
                 todayError.setVisibility(View.VISIBLE);
-                Log.e("API Fail", t.getMessage());
+                Log.e("API Fail", "네트워크 오류:" + t.getMessage());
+                t.printStackTrace();
             }
         });
     }

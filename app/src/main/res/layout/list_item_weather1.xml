@@ -28,7 +28,8 @@
             android:id="@+id/imgWeather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/sun_cloud" />
+            android:src="@drawable/sun_cloud"
+            android:layout_marginBottom="7dp"/>
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
