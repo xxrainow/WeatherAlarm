@@ -29,8 +29,8 @@
                     android:id="@+id/tvLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="서울"
-                    android:textSize="20sp"
+                    android:text="서울, 한국"
+                    android:textSize="15sp"
                     android:textColor="#000000" />
                 <TextView
                     android:id="@+id/tvTitle"
@@ -53,6 +53,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/viewPagerContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -107,13 +108,13 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/ic_jacket"
+                            android:src="@drawable/raindrop"
                             android:contentDescription="점퍼" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:text="점퍼"
                             android:textColor="#000000"
                             android:textSize="14sp" />
@@ -129,13 +130,13 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/ic_sweater"
+                            android:src="@drawable/rain"
                             android:contentDescription="긴팔 티" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:text="긴팔 티"
                             android:textColor="#000000"
                             android:textSize="14sp" />
@@ -151,13 +152,13 @@
                         <ImageView
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/ic_pants"
+                            android:src="@drawable/rain_snow"
                             android:contentDescription="긴바지" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:text="긴바지"
                             android:textColor="#000000"
                             android:textSize="14sp" />
@@ -165,9 +166,7 @@
                 </LinearLayout>
 
 
-
-
-        <!-- 날씨 요약 -->
+                <!-- 날씨 요약 -->
                 <TextView
                     android:id="@+id/tvWeatherSummary"
                     android:layout_width="wrap_content"
