@@ -21,47 +21,46 @@ public class NotificationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static NotificationFragment newInstance(String param1, String param2) {
-        NotificationFragment fragment = new NotificationFragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // Retrieve any parameters if necessary
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification_default, container, false);
 
-        // Initialize the button
-        edit1 = view.findViewById(R.id.btnAlarmEdit1);
-        edit1.setOnClickListener(v -> replaceFragment(new NotificationSettingFragment1()));
-
         return view;
     }
 
-    // Fragment 교체 메서드
-    private void replaceFragment(Fragment fragment) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize the button
+        edit1 = view.findViewById(R.id.btnAlarmEdit1);
+        // Replace NotificationFragment with NotificationSettingFragment1 on button click
+        edit1.setOnClickListener(v -> replaceFragment(NotificationSettingFragment1.class.getSimpleName()));
+    }
+
+    private void replaceFragment(String tag) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        // Optional: Add animations
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        // Check if the Fragment exists in FragmentManager by its tag
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
-        transaction.replace(R.id.fragmentNotificationContainer, fragment);
-        transaction.addToBackStack(null); // Add transaction to back stack
+        if (fragment == null) {
+            // If not found, create a new instance and add it
+            if (tag.equals(NotificationSettingFragment1.class.getSimpleName())) {
+                fragment = new NotificationSettingFragment1();
+            }
+        }
+
+        // Replace the container's current Fragment with the new Fragment
+        transaction.add(R.id.fragmentNotificationContainer, fragment, tag);
+
+        // Add the transaction to the back stack to enable back navigation
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
         transaction.commit();
     }
-
 }
