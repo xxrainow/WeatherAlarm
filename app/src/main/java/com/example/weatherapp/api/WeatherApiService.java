@@ -1,7 +1,5 @@
 package com.example.weatherapp.api;
 
-import static com.example.weatherapp.utils.Constants.WEATHER_COUNT;
-
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -64,14 +62,14 @@ public class WeatherApiService {
 
                     List<ITEM> itemList = items.getItem();
                     List<ModelWeather> weatherList = new ArrayList<>();
-                    for (int i = 0; i < WEATHER_COUNT; i++) {
+                    for (int i = 0; i < 6; i++) {
                         weatherList.add(new ModelWeather());
                     }
 
                     int index = 0;
                     int totalCount = response.body().getResponse().getBody().getTotalCount();
                     for (int i = 0; i < totalCount; i++) {
-                        index %= WEATHER_COUNT;
+                        index %= 6;
                         ITEM item = itemList.get(i);
 
                         switch (item.getCategory()) {

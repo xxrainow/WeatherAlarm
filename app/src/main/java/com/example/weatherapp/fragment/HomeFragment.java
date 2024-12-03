@@ -5,7 +5,6 @@ import static com.example.weatherapp.adapter.WeatherAdapter.getRainTypeImage;
 import static com.example.weatherapp.adapter.WeatherAdapter.getSky;
 import static com.example.weatherapp.adapter.WeatherAdapter.getWeatherImage;
 import static com.example.weatherapp.utils.currentlocation.Common.getBaseTime;
-import static com.example.weatherapp.utils.Constants.WEATHER_COUNT;
 
 import android.graphics.Point;
 import android.os.Bundle;
