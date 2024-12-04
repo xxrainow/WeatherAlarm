@@ -68,7 +68,7 @@
                         android:id="@+id/imgWeather"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/sun"/>
+                        android:src="@drawable/raintype_sun"/>
                     <TextView
                         android:id="@+id/tvTemperature"
                         android:layout_width="wrap_content"
@@ -112,16 +112,18 @@
                         android:gravity="center">
 
                         <ImageView
+                            android:id="@+id/imgCloth1"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/raindrop"
-                            android:contentDescription="점퍼" />
+                            android:src="@drawable/raintype_raindrop"
+                            android:contentDescription="옷1" />
 
                         <TextView
+                            android:id="@+id/tvCloth1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="점퍼"
+                            android:text="옷1"
                             android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -134,16 +136,18 @@
                         android:gravity="center">
 
                         <ImageView
+                            android:id="@+id/imgCloth2"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/rain"
-                            android:contentDescription="긴팔 티" />
+                            android:src="@drawable/raintype_rain"
+                            android:contentDescription="옷2" />
 
                         <TextView
+                            android:id="@+id/tvCloth2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="긴팔 티"
+                            android:text="옷2"
                             android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -156,16 +160,18 @@
                         android:gravity="center">
 
                         <ImageView
+                            android:id="@+id/imgCloth3"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:src="@drawable/rain_snow"
-                            android:contentDescription="긴바지" />
+                            android:src="@drawable/raintype_rain_snow"
+                            android:contentDescription="옷3" />
 
                         <TextView
+                            android:id="@+id/tvCloth3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="긴바지"
+                            android:text="옷3"
                             android:textColor="#000000"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -174,14 +180,13 @@
 
                 <!-- 날씨 요약 -->
                 <TextView
-                    android:id="@+id/tvWeatherSummary"
+                    android:id="@+id/tvWeatherDesription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="✔️ 얇은 외투와 긴팔, 긴바지가 적당해요."
                     android:textColor="#666666"
-                    android:textSize="14sp"
-                    android:textAlignment="center" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>

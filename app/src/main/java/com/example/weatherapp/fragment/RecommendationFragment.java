@@ -1,7 +1,7 @@
 package com.example.weatherapp.fragment;
 
+import static com.example.weatherapp.utils.WeatherFormatter.getClothesDescription;
 import static com.example.weatherapp.utils.WeatherFormatter.getRainType;
-import static com.example.weatherapp.utils.WeatherFormatter.getRainTypeImage;
 import static com.example.weatherapp.utils.WeatherFormatter.getSky;
 import static com.example.weatherapp.utils.WeatherFormatter.getWeatherImage;
 
@@ -25,6 +25,7 @@ import com.example.weatherapp.api.WeatherApiService;
 import com.example.weatherapp.api.WeatherCallback;
 import com.example.weatherapp.data.ModelWeather;
 import com.example.weatherapp.utils.WeatherCoordinateConverter;
+import com.example.weatherapp.utils.WeatherFormatter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -43,11 +44,18 @@ public class RecommendationFragment extends Fragment implements WeatherCallback 
 
     private TextView todayDate; // 오늘 날짜 텍스트뷰
     private ImageView imgWeather; // 날씨 이미지뷰
-    private ImageView imgRainType; // 강수 형태 이미지뷰
     private TextView tvTemperature; // 온도 텍스트뷰
     private TextView tvRainType; // 강수 형태 텍스트뷰
-    private TextView tvHumidity; // 습도 텍스트뷰
     private TextView tvSky; // 하늘 상태 텍스트뷰
+
+    private ImageView imgCloth1; // 옷 이미지뷰 1
+    private ImageView imgCloth2; // 옷 이미지뷰 2
+    private ImageView imgCloth3; // 옷 이미지뷰 3
+    private TextView tvCloth1; // 옷 텍스트뷰 1
+    private TextView tvCloth2; // 옷 텍스트뷰 2
+    private TextView tvCloth3; // 옷 텍스트뷰 3
+    private TextView tvWeatherDesription;
+
     // 발표 시각
     private Point curPoint;
 
@@ -60,6 +68,15 @@ public class RecommendationFragment extends Fragment implements WeatherCallback 
         tvTemperature = rootView.findViewById(R.id.tvTemperature);
         tvRainType = rootView.findViewById(R.id.tvRainType); // 강수 형태 텍스트뷰
         tvSky = rootView.findViewById(R.id.tvSky); // 하늘 상태 텍스트뷰
+
+        imgCloth1 = rootView.findViewById(R.id.imgCloth1); // 옷 이미지뷰 1
+        imgCloth2 = rootView.findViewById(R.id.imgCloth2); // 옷 이미지뷰 2
+        imgCloth3 = rootView.findViewById(R.id.imgCloth3); // 옷 이미지뷰 3
+        tvCloth1 = rootView.findViewById(R.id.tvCloth1); // 옷 텍스트뷰 1
+        tvCloth2 = rootView.findViewById(R.id.tvCloth2); // 옷 텍스트뷰 2
+        tvCloth3 = rootView.findViewById(R.id.tvCloth3); // 옷 텍스트뷰 3
+
+        tvWeatherDesription = rootView.findViewById(R.id.tvWeatherDesription);
 
         requestLocation();
 
@@ -78,7 +95,33 @@ public class RecommendationFragment extends Fragment implements WeatherCallback 
         tvTemperature.setText(temp + "°C"); // 온도
         tvSky.setText(getSky(sky)); // 하늘 상태
         tvRainType.setText(getRainType(rainType)); // 강수 형태
-        todayDate.setText(new SimpleDateFormat("MM월 dd일에", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+        todayDate.setText(new SimpleDateFormat("MM월 dd일의", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+
+        // 온도에 따른 옷 추천 이미지 설정
+        int temperature = Integer.parseInt(temp); // 온도를 정수로 변환
+        setClothesImages(temperature);
+        setClothesItems(temperature);
+
+        tvWeatherDesription.setText("✔\uFE0F 오늘의 날씨에는 " + getClothesDescription(temperature) + "(이)가 적당해요!");
+
+    }
+
+    private void setClothesImages(int temp) {
+        int[] clothesImages = WeatherFormatter.getClothesImage(temp); // 온도에 따른 옷 이미지 배열 가져오기
+
+        // 이미지뷰에 이미지 설정
+        imgCloth1.setImageResource(clothesImages[0]);
+        imgCloth2.setImageResource(clothesImages[1]);
+        imgCloth3.setImageResource(clothesImages[2]);
+    }
+
+    private void setClothesItems(int temp) {
+        String[] clothesItems = WeatherFormatter.getClothesItem(temp); // 온도에 따른 옷 이미지 배열 가져오기
+
+        // 이미지뷰에 이미지 설정
+        tvCloth1.setText(clothesItems[0]);
+        tvCloth2.setText(clothesItems[1]);
+        tvCloth3.setText(clothesItems[2]);
     }
 
     @Override

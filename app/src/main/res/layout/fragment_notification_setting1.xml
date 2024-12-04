@@ -35,7 +35,7 @@
                     android:background="@null"
                     android:textSize="20sp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/back_button"/>
+                    android:src="@drawable/button_back"/>
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                     android:id="@+id/alarmTitleIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/rain_snow"
+                    android:src="@drawable/raintype_rain_snow"
                     android:layout_marginTop="5dp"/>
 
                 <TextView

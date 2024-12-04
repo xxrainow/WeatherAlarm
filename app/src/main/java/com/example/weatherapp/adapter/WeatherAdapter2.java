@@ -1,7 +1,7 @@
 package com.example.weatherapp.adapter;
 
+import static com.example.weatherapp.utils.WeatherFormatter.getClothesDescription;
 import static com.example.weatherapp.utils.WeatherFormatter.getRainType;
-import static com.example.weatherapp.utils.WeatherFormatter.getRecommends;
 import static com.example.weatherapp.utils.WeatherFormatter.getSky;
 
 import android.view.LayoutInflater;
@@ -63,7 +63,7 @@ public class WeatherAdapter2 extends RecyclerView.Adapter<WeatherAdapter2.ViewHo
             tvTemp.setText(item.getTemp() + "°");
 
             try {
-                tvRecommends.setText(getRecommends(Integer.parseInt(item.getTemp())));
+                tvRecommends.setText(getClothesDescription(Integer.parseInt(item.getTemp())));
             } catch (NumberFormatException e) {
                 tvRecommends.setText("온도 데이터 오류");
             }

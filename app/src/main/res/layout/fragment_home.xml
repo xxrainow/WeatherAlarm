@@ -16,7 +16,7 @@
         android:layout_margin="15dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/refresh_button"
+        android:background="@drawable/button_refresh"
         android:contentDescription="Refresh Weather"/>
 
     <!-- 스크롤 가능한 콘텐츠 -->
@@ -66,13 +66,13 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
-                    android:src="@drawable/sun_cloud" />
+                    android:src="@drawable/sky_1_sun_cloud" />
                 <ImageView
                     android:id="@+id/imgRainType"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/rain" />
+                    android:src="@drawable/raintype_rain" />
             </LinearLayout>
 
 
