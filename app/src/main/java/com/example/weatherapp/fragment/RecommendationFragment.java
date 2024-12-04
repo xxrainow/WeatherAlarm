@@ -1,5 +1,11 @@
 package com.example.weatherapp.fragment;
 
+import static com.example.weatherapp.utils.WeatherFormatter.getRainType;
+import static com.example.weatherapp.utils.WeatherFormatter.getRainTypeImage;
+import static com.example.weatherapp.utils.WeatherFormatter.getSky;
+import static com.example.weatherapp.utils.WeatherFormatter.getWeatherImage;
+
+import android.graphics.Point;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +21,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.api.WeatherApiService;
+import com.example.weatherapp.api.WeatherCallback;
+import com.example.weatherapp.data.ModelWeather;
+import com.example.weatherapp.utils.WeatherCoordinateConverter;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
-public class RecommendationFragment extends Fragment {
+public class RecommendationFragment extends Fragment implements WeatherCallback {
 
     private ViewPager2 viewPager;
-
     private View rootView;
 
     private TextView todayDate; // 오늘 날짜 텍스트뷰
@@ -31,27 +48,72 @@ public class RecommendationFragment extends Fragment {
     private TextView tvRainType; // 강수 형태 텍스트뷰
     private TextView tvHumidity; // 습도 텍스트뷰
     private TextView tvSky; // 하늘 상태 텍스트뷰
+    // 발표 시각
+    private Point curPoint;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recommendation, container, false);
+
         todayDate = rootView.findViewById(R.id.todayDate); // 오늘 날짜 텍스트뷰
         imgWeather = rootView.findViewById(R.id.imgWeather);
-
-
-        imgRainType = rootView.findViewById(R.id.imgRainType); // 강수 형태 이미지뷰
-
         tvTemperature = rootView.findViewById(R.id.tvTemperature);
         tvRainType = rootView.findViewById(R.id.tvRainType); // 강수 형태 텍스트뷰
-        tvHumidity = rootView.findViewById(R.id.tvHumidity); // 습도 텍스트뷰
         tvSky = rootView.findViewById(R.id.tvSky); // 하늘 상태 텍스트뷰
+
+        requestLocation();
 
         return rootView;
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+    @Override
+    public void updateWeatherView(String rainType, String temp, String humidity, String sky) {
+        imgWeather.setImageResource(getWeatherImage(sky));
+        tvTemperature.setText(temp + "°C"); // 온도
+        tvSky.setText(getSky(sky)); // 하늘 상태
+        tvRainType.setText(getRainType(rainType)); // 강수 형태
+        todayDate.setText(new SimpleDateFormat("MM월 dd일에", Locale.getDefault()).format(Calendar.getInstance().getTime()) + " 날씨");
+    }
+
+    @Override
+    public void updateRecyclerView(List<ModelWeather> weatherList) {
+        // Adapter가 없으므로 데이터만 UI에 직접 반영하는 로직 작성
+        // 예: 텍스트뷰 업데이트 등
+    }
+
+    private void requestLocation() {
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        try {
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(60 * 1000); // 1분 간격
+
+            LocationCallback locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    for (android.location.Location location : locationResult.getLocations()) {
+                        curPoint = WeatherCoordinateConverter.dfs_xy_conv(location.getLatitude(), location.getLongitude());
+                        Log.d("LocationResult", "위도: " + location.getLatitude() + ", 경도: " + location.getLongitude());
+
+                        // 현재 위치의 날씨 데이터 가져오기
+                        WeatherApiService.fetchWeather(getContext(), String.valueOf(curPoint.x), String.valueOf(curPoint.y), RecommendationFragment.this
+                        );
+                    }
+                }
+            };
+
+            locationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+        } catch (SecurityException e) {
+            Log.e("RequestLocation", "위치 권한 오류: " + e.getMessage());
+        }
+
     }
 }

@@ -8,17 +8,6 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <!-- 새로고침 버튼 -->
-    <!--<ImageButton
-        android:id="@+id/btnRefresh"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_margin="15dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/refresh_button"
-        android:contentDescription="Refresh Weather"/>-->
     <Button
         android:id="@+id/btnRefresh"
         android:layout_width="48dp"
@@ -109,6 +98,14 @@
                 android:layout_marginBottom="5dp">
 
                 <TextView
+                    android:id="@+id/tvSky"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="하늘 상태 : ##"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
                     android:id="@+id/tvRainType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -121,14 +118,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="습도 : ##%"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tvSky"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="하늘 상태 : ##"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>

@@ -21,7 +21,7 @@ import retrofit2.Response;
 public class WeatherApiService {
 
     // 날씨 정보를 가져오는 메서드
-    public static void fetchWeather(Context context, String nx, String ny, final HomeFragment fragment) {
+    public static void fetchWeather(Context context, String nx, String ny, WeatherCallback callback) {
         String base_date = "20241130";  // 발표 일자
         String base_time = "2000";      // 발표 시각
 
@@ -99,13 +99,13 @@ public class WeatherApiService {
                         String temp = firstWeather.getTemp();
                         String humidity = firstWeather.getHumidity();
                         String sky = firstWeather.getSky();
-                        fragment.updateWeatherView(rainType, temp, humidity,sky);  // 날씨 정보 업데이트 메서드 호출
+                        callback.updateWeatherView(rainType, temp, humidity,sky);  // 날씨 정보 업데이트 메서드 호출
                         for (int i = 0; i < 6; i++) {
                             weatherList.get(i).setFcstTime(itemList.get(i).getFcstTime());
                         }
                     }
 
-                    fragment.updateRecyclerView(weatherList);
+                    callback.updateRecyclerView(weatherList);
                     Toast.makeText(context, itemList.get(0).getFcstDate() + ", " + itemList.get(0).getFcstTime() + "의 날씨 정보입니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.e("API Error", "응답 실패: " + response.code() + " - " + response.message());
