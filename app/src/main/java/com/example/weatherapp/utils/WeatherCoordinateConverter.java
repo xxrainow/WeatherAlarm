@@ -1,9 +1,9 @@
-package com.example.weatherapp.utils.currentlocation;
+package com.example.weatherapp.utils;
 
 import android.graphics.Point;
 import android.util.Log;
 
-public class Common {
+public class WeatherCoordinateConverter {
 
     // baseTime 설정하기
     public static String getBaseTime(String currentHour, String currentMinute) {

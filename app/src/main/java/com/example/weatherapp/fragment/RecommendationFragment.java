@@ -14,9 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weatherapp.R;
-import com.example.weatherapp.adapter.WeatherAdapter;
-import com.example.weatherapp.data.ModelWeather;
-import com.example.weatherapp.data.WeatherRecommendation;
 
 import java.util.ArrayList;
 import java.util.List;

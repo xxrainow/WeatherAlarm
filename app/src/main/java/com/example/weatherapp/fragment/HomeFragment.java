@@ -1,10 +1,9 @@
 package com.example.weatherapp.fragment;
 
-import static com.example.weatherapp.adapter.WeatherAdapter.getRainType;
-import static com.example.weatherapp.adapter.WeatherAdapter.getRainTypeImage;
-import static com.example.weatherapp.adapter.WeatherAdapter.getSky;
-import static com.example.weatherapp.adapter.WeatherAdapter.getWeatherImage;
-import static com.example.weatherapp.utils.currentlocation.Common.getBaseTime;
+import static com.example.weatherapp.utils.WeatherFormatter.getRainType;
+import static com.example.weatherapp.utils.WeatherFormatter.getRainTypeImage;
+import static com.example.weatherapp.utils.WeatherFormatter.getSky;
+import static com.example.weatherapp.utils.WeatherFormatter.getWeatherImage;
 
 import android.graphics.Point;
 import android.os.Bundle;
@@ -26,30 +25,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weatherapp.R;
 import com.example.weatherapp.adapter.WeatherAdapter;
 import com.example.weatherapp.adapter.WeatherAdapter2;
-import com.example.weatherapp.api.ApiObject;
-import com.example.weatherapp.api.BODY;
-import com.example.weatherapp.api.ITEM;
-import com.example.weatherapp.api.ITEMS;
-import com.example.weatherapp.api.WEATHER;
 import com.example.weatherapp.api.WeatherApiService;
-import com.example.weatherapp.utils.currentlocation.Common;
+import com.example.weatherapp.utils.WeatherCoordinateConverter;
 import com.example.weatherapp.data.ModelWeather;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     private RecyclerView weatherRecyclerView1; // 날씨 리사이클러 뷰(가로 슬라이드)
@@ -144,7 +132,7 @@ public class HomeFragment extends Fragment {
                 public void onLocationResult(@NonNull LocationResult locationResult) {
                     for (android.location.Location location : locationResult.getLocations()) {
                         // 현재 위치의 위경도를 격자좌표로 변환
-                        curPoint = Common.dfs_xy_conv(location.getLatitude(), location.getLongitude());
+                        curPoint = WeatherCoordinateConverter.dfs_xy_conv(location.getLatitude(), location.getLongitude());
                         Log.d("LocationResult", "위도: " + location.getLatitude() + ", 경도: " + location.getLongitude());
 
                         // 오늘 날짜 텍스트뷰 설정

@@ -6,8 +6,7 @@ import android.widget.Toast;
 
 import com.example.weatherapp.data.ModelWeather;
 import com.example.weatherapp.fragment.HomeFragment;
-import com.example.weatherapp.utils.currentlocation.Common;
-import com.google.gson.Gson;
+import com.example.weatherapp.utils.WeatherCoordinateConverter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class WeatherApiService {
         String timeM = new SimpleDateFormat("mm", Locale.getDefault()).format(cal.getTime());   // 현재 시각 (분)
 
         base_date = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(cal.getTime()); // 현재 날짜
-        base_time = Common.getBaseTime(timeH, timeM);  // base_time 계산
+        base_time = WeatherCoordinateConverter.getBaseTime(timeH, timeM);  // base_time 계산
 
         if (timeH.equals("00") && base_time.equals("2330")) {
             cal.add(Calendar.DATE, -1);
