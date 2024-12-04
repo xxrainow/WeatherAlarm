@@ -1,5 +1,8 @@
 package com.example.weatherapp.fragment;
 
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weatherapp.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -24,6 +29,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "MapFragment";
@@ -31,6 +40,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker currentMarker;
+
+    private TextView tvAddress;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Nullable
     @Override
@@ -41,8 +53,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        requestUserLocationAndSetupMarker();
+        tvAddress = rootView.findViewById(R.id.tvAddress);
+
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize the FusedLocationProviderClient
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        // Get location and update address
+        requestUserLocationAndSetupMarker();
     }
 
     @Override
@@ -57,6 +81,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private Marker setupMarker(LatLngEntity locationLatLngEntity) {
+        // 기존 마커 제거
+        if (currentMarker != null) {
+            currentMarker.remove();
+        }
+
+        // 새로운 위치로 마커 추가
         LatLng positionLatLng = new LatLng(locationLatLngEntity.latitude, locationLatLngEntity.longitude);
         MarkerOptions markerOption = new MarkerOptions()
                 .position(positionLatLng)
@@ -67,13 +97,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionLatLng, 15f));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15f));
 
-        return googleMap.addMarker(markerOption);
+        // 새 마커를 currentMarker에 저장
+        currentMarker = googleMap.addMarker(markerOption);
+        return currentMarker;
     }
 
 
     private void requestUserLocationAndSetupMarker() {
-        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
-
         try {
             LocationRequest locationRequest = LocationRequest.create();
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -82,9 +112,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LocationCallback locationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(@NonNull LocationResult locationResult) {
-                    for (android.location.Location location : locationResult.getLocations()) {
+                    for (Location location : locationResult.getLocations()) {
                         double latitude = location.getLatitude();
                         double longitude = location.getLongitude();
+                        /*double latitude = 37.5665;
+                        double longitude = 126.9780;*/
 
                         Log.d("UserLocation", "위도: " + latitude + ", 경도: " + longitude);
 
@@ -92,16 +124,43 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         LatLngEntity userLocation = new LatLngEntity(latitude, longitude);
                         setupMarker(userLocation);
 
+                        // 주소 설정
+                        setAddressFromLocation(latitude, longitude);
+
                         // 필요 시 위치 업데이트를 중지
-                        locationClient.removeLocationUpdates(this);
+                        fusedLocationProviderClient.removeLocationUpdates(this);
                     }
                 }
             };
 
-            locationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
         } catch (SecurityException e) {
             Log.e("LocationError", "위치 권한이 필요합니다: " + e.getMessage());
+        }
+    }
+
+
+    private void setAddressFromLocation(double latitude, double longitude) {
+        try {
+            Geocoder geocoder = new Geocoder(requireContext(), Locale.KOREA);
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                String adminArea = address.getAdminArea() != null ? address.getAdminArea() : "";
+                String fullAddress = address.getAddressLine(0) != null ? address.getAddressLine(0) : "정보 없음";
+
+                tvAddress.setText(fullAddress);
+                Log.d("AddressDebug", "Admin Area: " + adminArea);       // 시/도
+                //Log.d("AddressDebug", "Locality: " + locality);         // 시/군/구
+                //Log.d("AddressDebug", "Thoroughfare: " + thoroughfare); // 도로명
+                Log.d("AddressDebug", "Full Address: " + fullAddress);  // 전체 주소
+            } else {
+                tvAddress.setText("주소를 가져올 수 없습니다.");
+            }
+        } catch (IOException e) {
+            Toast.makeText(requireContext(), "주소를 가져오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            Log.e("GeoCoderError", "주소 가져오기 실패: " + e.getMessage());
         }
     }
 
@@ -142,13 +201,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onDestroy();
     }
 
-/**
- * LatLngEntity class
- *
- * @property latitude 위도
- * * @property longitude 경도
- * @property longitude 경도
-*/
     public static class LatLngEntity {
         public double latitude;
         public double longitude;
@@ -159,5 +211,3 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 }
-
-
