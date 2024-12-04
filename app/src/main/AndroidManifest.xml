@@ -27,6 +27,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         tools:replace="android:appComponentFactory">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB-BNi6cHeQqP4jMpHV8ShkOOm3lTqYLsY" />
         <activity
             android:name=".Splash"
             android:theme="@style/SplashTheme"

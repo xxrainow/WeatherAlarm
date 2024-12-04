@@ -53,4 +53,9 @@ dependencies {
 
     // Gson 라이브러리
     implementation("com.google.code.gson:gson:2.8.9")
+
+    // Google Map
+    implementation("com.google.android.gms:play-services-maps:17.0.0")
+    implementation("com.google.android.gms:play-services-location:17.0.0")
+
 }
