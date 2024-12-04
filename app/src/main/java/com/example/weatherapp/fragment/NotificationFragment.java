@@ -24,7 +24,6 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification_default, container, false);
 
         return view;
@@ -32,11 +31,7 @@ public class NotificationFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-
-        // Initialize the button
         edit1 = view.findViewById(R.id.btnAlarmEdit1);
-        // Replace NotificationFragment with NotificationSettingFragment1 on button click
         edit1.setOnClickListener(v -> replaceFragment(NotificationSettingFragment1.class.getSimpleName()));
     }
 
@@ -44,23 +39,17 @@ public class NotificationFragment extends Fragment {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        // Check if the Fragment exists in FragmentManager by its tag
+        // NotificationSettingFragment1이라는 태그로 저장된 프래그먼트를 찾아서 fragment에 저장
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
 
         if (fragment == null) {
-            // If not found, create a new instance and add it
             if (tag.equals(NotificationSettingFragment1.class.getSimpleName())) {
                 fragment = new NotificationSettingFragment1();
             }
         }
 
-        // Replace the container's current Fragment with the new Fragment
         transaction.add(R.id.fragmentNotificationContainer, fragment, tag);
-
-        // Add the transaction to the back stack to enable back navigation
         transaction.addToBackStack(null);
-
-        // Commit the transaction
         transaction.commit();
     }
 }

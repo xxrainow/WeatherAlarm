@@ -53,12 +53,5 @@ public class RecommendationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
-        // Prepare data for ViewPager2
-        List<WeatherRecommendation> weatherData = new ArrayList<>();
-        weatherData.add(new WeatherRecommendation("서울, 한국", "11월 3일", "✔️ 얇은 외투와 긴팔, 긴바지가 적당해요."));
-        weatherData.add(new WeatherRecommendation("부산, 한국", "11월 4일", "✔️ 따뜻한 옷차림을 추천합니다."));
-        weatherData.add(new WeatherRecommendation("제주, 한국", "11월 5일", "✔️ 가벼운 외투를 준비하세요."));
     }
 }
