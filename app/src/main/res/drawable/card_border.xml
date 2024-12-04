@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" /> <!-- 카드 내부 색상 (배경색) -->
+    <stroke
+        android:width="4dp"
+        android:color="#000000" />
+    <corners android:radius="20dp" /> <!-- 둥근 모서리 반경 -->
+</shape>

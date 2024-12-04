@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.weatherapp.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,6 +41,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        requestUserLocationAndSetupMarker();
         return rootView;
     }
 
@@ -54,8 +60,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         LatLng positionLatLng = new LatLng(locationLatLngEntity.latitude, locationLatLngEntity.longitude);
         MarkerOptions markerOption = new MarkerOptions()
                 .position(positionLatLng)
-                .title("위치")
-                .snippet("서울역 위치");
+                .title("내 위치")
+                .snippet("현재 위치를 기반으로 표시된 마커입니다.");
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionLatLng, 15f));
@@ -63,6 +69,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         return googleMap.addMarker(markerOption);
     }
+
+
+    private void requestUserLocationAndSetupMarker() {
+        FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        try {
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationRequest.setInterval(60 * 1000); // 요청 간격 (1분)
+
+            LocationCallback locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(@NonNull LocationResult locationResult) {
+                    for (android.location.Location location : locationResult.getLocations()) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+
+                        Log.d("UserLocation", "위도: " + latitude + ", 경도: " + longitude);
+
+                        // 현재 위치를 기반으로 마커 설정
+                        LatLngEntity userLocation = new LatLngEntity(latitude, longitude);
+                        setupMarker(userLocation);
+
+                        // 필요 시 위치 업데이트를 중지
+                        locationClient.removeLocationUpdates(this);
+                    }
+                }
+            };
+
+            locationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+        } catch (SecurityException e) {
+            Log.e("LocationError", "위치 권한이 필요합니다: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public void onStart() {
