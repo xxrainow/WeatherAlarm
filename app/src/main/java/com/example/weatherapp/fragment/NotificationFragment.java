@@ -6,12 +6,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.notification.AlarmPreferences;
 
 public class NotificationFragment extends Fragment {
 
@@ -33,6 +37,25 @@ public class NotificationFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         edit1 = view.findViewById(R.id.btnAlarmEdit1);
         edit1.setOnClickListener(v -> replaceFragment(NotificationSettingFragment1.class.getSimpleName()));
+
+        // SharedPreferences에서 데이터 불러오기
+        AlarmPreferences alarmPreferences = new AlarmPreferences(requireContext());
+        String time = alarmPreferences.getTime();
+        String message = alarmPreferences.getMessage();
+        boolean isAlarmOn = alarmPreferences.isAlarmOn();
+
+        // 불러온 값 로깅
+        alarmPreferences.logStoredValues();
+        Log.d("불러온 값", "Loaded data - Time: " + time + ", Message: " + message + ", Alarm: " + (isAlarmOn ? "ON" : "OFF"));
+
+        // 데이터를 UI에 적용
+        TextView alarmTimeTextView = view.findViewById(R.id.tvSelectedTime);
+        TextView alarmMessageTextView = view.findViewById(R.id.tvAlarmMessage);
+        Switch alarmSwitch = view.findViewById(R.id.switchAlarm);
+
+        alarmTimeTextView.setText(time); // 알림 시간
+        alarmMessageTextView.setText("알림 메시지: " + message);
+        alarmSwitch.setChecked(isAlarmOn);
     }
 
     private void replaceFragment(String tag) {
