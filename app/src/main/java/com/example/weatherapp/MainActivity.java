@@ -1,8 +1,11 @@
 package com.example.weatherapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,6 +15,8 @@ import com.example.weatherapp.fragment.HomeFragment;
 import com.example.weatherapp.fragment.MapFragment;
 import com.example.weatherapp.fragment.NotificationFragment;
 import com.example.weatherapp.fragment.RecommendationFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +24,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM Log", "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+                    // Get new FCM registration token
+                    String token = task.getResult();
+                    Log.d("FCM Log", "FCM 토큰: " + token);
+                    Toast.makeText(MainActivity.this, "FCM 토큰: " + token, Toast.LENGTH_SHORT).show();
+                });
+
 
         // 기본으로 HomeFragment 로드
         replaceFragment(new HomeFragment());

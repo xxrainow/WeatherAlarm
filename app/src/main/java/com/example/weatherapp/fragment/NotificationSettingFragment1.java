@@ -14,10 +14,21 @@ import com.example.weatherapp.R;
 
 public class NotificationSettingFragment1 extends Fragment {
     private ImageButton backBtn;
+    private static final String ARG_TITLE = "title";
+    private static final String ARG_MESSAGE = "message";
 
-    public NotificationSettingFragment1() {
-        // Required empty public constructor
+    public static NotificationSettingFragment1 newInstance(String title, String message) {
+        NotificationSettingFragment1 fragment = new NotificationSettingFragment1();
+        Bundle args = new Bundle();
+        args.putString(ARG_TITLE, title);
+        args.putString(ARG_MESSAGE, message);
+        fragment.setArguments(args);
+        return fragment;
     }
+
+    /*public NotificationSettingFragment1() {
+        // Required empty public constructor
+    }*/
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
