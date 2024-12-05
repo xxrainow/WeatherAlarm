@@ -1,5 +1,7 @@
 package com.example.weatherapp.fragment;
 
+import static com.example.weatherapp.notification.AlarmFunctions.setAlarm;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +17,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.notification.AlarmFunctions;
 import com.example.weatherapp.notification.AlarmPreferences;
 
 public class NotificationFragment extends Fragment {
@@ -38,8 +41,10 @@ public class NotificationFragment extends Fragment {
         edit1 = view.findViewById(R.id.btnAlarmEdit1);
         edit1.setOnClickListener(v -> replaceFragment(NotificationSettingFragment1.class.getSimpleName()));
 
+
         // SharedPreferences에서 데이터 불러오기
         AlarmPreferences alarmPreferences = new AlarmPreferences(requireContext());
+        AlarmPreferences.AlarmData alarmData = alarmPreferences.loadStoredValues();
         String time = alarmPreferences.getTime();
         String message = alarmPreferences.getMessage();
         boolean isAlarmOn = alarmPreferences.isAlarmOn();
@@ -47,6 +52,16 @@ public class NotificationFragment extends Fragment {
         // 불러온 값 로깅
         alarmPreferences.logStoredValues();
         Log.d("불러온 값", "Loaded data - Time: " + time + ", Message: " + message + ", Alarm: " + (isAlarmOn ? "ON" : "OFF"));
+
+        // 예약 알람 로그 출력
+        // 알람 예약
+        if (alarmData.isAlarmOn) {
+            AlarmFunctions.setAlarm(requireContext(), alarmData.alarmTime, alarmData.message);
+            Log.d("예약알람", "Alarm set for: " + alarmData.time + " with message: " + alarmData.message);
+        } else {
+            Log.d("예약알람", "Alarm is OFF. No alarm set.");
+        }
+
 
         // 데이터를 UI에 적용
         TextView alarmTimeTextView = view.findViewById(R.id.tvSelectedTime);
