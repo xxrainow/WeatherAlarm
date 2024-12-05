@@ -57,7 +57,7 @@ public class NotificationFragment extends Fragment {
         // 알람 예약
         if (alarmData.isAlarmOn) {
             AlarmFunctions.setAlarm(requireContext(), alarmData.alarmTime, alarmData.message);
-            Log.d("예약알람", "Alarm set for: " + alarmData.time + " with message: " + alarmData.message);
+            Log.d("예약알람", "예약된 알람 시간: " + alarmData.time + " 예약된 알람 메세지: " + alarmData.message);
         } else {
             Log.d("예약알람", "Alarm is OFF. No alarm set.");
         }
