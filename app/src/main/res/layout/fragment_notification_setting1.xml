@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#C0D0EF">
 
     <FrameLayout
         android:id="@+id/fragmentNotificationSettingContainer1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="#C0D0EF"
         android:clickable="true"
         android:focusable="true"
         android:layout_weight="1">
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp"
-            android:background="#FFFFFF">
+            android:padding="28dp"
+            android:background="#C0D0EF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,169 +47,178 @@
                     android:textColor="#000000" />
             </LinearLayout>
 
-
-            <!-- 상단 아이콘 및 제목 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="24dp">
-
-                <ImageView
-                    android:id="@+id/alarmTitleIcon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/raintype_rain_snow"
-                    android:layout_marginTop="5dp"/>
-
-                <TextView
-                    android:id="@+id/etRoutineTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:text="비/눈"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <!-- 기본 설정 -->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="기본 설정"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/rounded">
-
+                android:background="@drawable/rounded"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <!-- 상단 아이콘 및 제목 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🔔  알람"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
-
-                    <Switch
-                        android:id="@+id/switchAlarm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <!-- 알람 설정 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🌧️  날씨 조건"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
-
-                    <!-- Spinner -->
-                    <TextView
-                        android:id="@+id/weatherConditionSpinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:text="강수 형태"
-                        android:background="@drawable/small_rounded"
-                        />
-
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:orientation="vertical"
-                    android:paddingBottom="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="💬  알림 메세지"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
-
-                    <EditText
-                        android:id="@+id/tvAlarmMessage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:hint="알림 받을 내용을 입력해주세요!"
-                        android:textColor="#000000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:paddingBottom="24dp"
                     >
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="⏰  언제?"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
+                    <ImageView
+                        android:id="@+id/alarmTitleIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/raintype_rain_snow"
+                        android:layout_marginTop="5dp"/>
 
                     <TextView
-                        android:id="@+id/selectedTime"
+                        android:id="@+id/etRoutineTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="비/눈"
+                        android:textSize="18sp" />
 
-                        android:hint="08:00"
-                        android:textSize="16sp" />
                 </LinearLayout>
 
+                <!-- 기본 설정 -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:text="기본 설정"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🔔  알람"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+
+                        <Switch
+                            android:id="@+id/switchAlarm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <!-- 알람 설정 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="🌧️  날씨 조건"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+
+                        <!-- Spinner -->
+                        <TextView
+                            android:id="@+id/weatherConditionSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:text="강수 형태"
+                            android:background="@drawable/small_rounded"
+                            />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💬  알림 메세지"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+
+                        <EditText
+                            android:id="@+id/tvAlarmMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:hint="알림 받을 내용을 입력해주세요!"
+                            android:textColor="#000000"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="⏰  언제?"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+
+                        <TextView
+                            android:id="@+id/selectedTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:hint="08:00"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+                <Button
+                    android:id="@+id/btnSetting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#303F9F"
+                    android:text="설정하기"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:padding="16dp"
+                    android:layout_marginTop="10dp"/>
             </LinearLayout>
 
-
-
-            <Button
-                android:id="@+id/btnSetting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#303F9F"
-                android:text="설정하기"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:layout_marginTop="10dp"/>
         </LinearLayout>
 
     </FrameLayout>

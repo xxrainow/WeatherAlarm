@@ -11,14 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomNavigationBar"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home"
+        />
 
     <!-- 하단 네비게이션 바 -->
     <LinearLayout
         android:id="@+id/bottomNavigationBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bottom_navigation_bar"
+        android:background="#0f1c30"
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
@@ -26,8 +27,8 @@
         <!-- 네비게이션 버튼들 -->
         <ImageButton
             android:id="@+id/navHome"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_margin="15dp"
             android:src="@drawable/nav_home"
             android:background="@null"
@@ -59,10 +60,12 @@
             android:id="@+id/navMap"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_margin="15dp"
+            android:layout_margin="20dp"
             android:background="@null"
+            android:contentDescription="Navigate to Map"
             android:scaleType="fitCenter"
-            android:src="@drawable/nav_map"
-            android:contentDescription="Navigate to Map"/>
+            android:src="@drawable/nav_map" />
+
     </LinearLayout>
+
 </RelativeLayout>

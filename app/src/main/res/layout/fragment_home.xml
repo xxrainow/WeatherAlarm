@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#C0D0EF"
     tools:context=".MainActivity">
 
     <Button
@@ -25,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,11 +38,11 @@
                 android:id="@+id/tvAdminArea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Seoul, Korea"
+                android:text="서울특별시"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="30dp"/>
             <TextView
                 android:id="@+id/tvAddress"
                 android:layout_width="wrap_content"
@@ -50,12 +51,20 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"/>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#668Dc0"
+                android:layout_marginTop="0dp">
+
+            </LinearLayout>
             <TextView
                 android:id="@+id/todayDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="##/##의 날씨"
-                android:textSize="30dp"
+                android:text="날짜 불러오는 중..."
+                android:textSize="28dp"
                 android:textColor="@color/black"
                 android:layout_margin="10dp"
                 android:gravity="center"
@@ -68,18 +77,11 @@
                 android:gravity="center_horizontal">
 
                 <ImageView
-                    android:id="@+id/imgWeather"
-                    android:layout_width="107dp"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/sky_1_sun_cloud" />
-                <ImageView
                     android:id="@+id/imgRainType"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/raintype_rain" />
+                    android:src="@drawable/raintype_sun" />
             </LinearLayout>
 
 
@@ -88,9 +90,9 @@
                 android:id="@+id/tvTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="##°C"
+                android:text="-°"
                 android:textColor="@color/black"
-                android:textSize="36sp"
+                android:textSize="60sp"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp" />
 
@@ -108,7 +110,7 @@
                     android:id="@+id/tvSky"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="하늘 상태 : ##"
+                    android:text="하늘 상태 : "
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -116,7 +118,7 @@
                     android:id="@+id/tvRainType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="강수 형태 : ##"
+                    android:text="강수 형태 : "
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -124,7 +126,7 @@
                     android:id="@+id/tvHumidity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="습도 : ##%"
+                    android:text="습도 : %"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -140,25 +142,28 @@
                 android:gravity="center"
                 android:visibility="gone" />
 
+
+
+                <TextView
+                    android:id="@+id/tvHourlyForecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hourly Forecast"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/weatherRecyclerView1"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"/>
+
+
             <!-- Hourly Forecast RecyclerView -->
-            <TextView
-                android:id="@+id/tvHourlyForecast"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hourly Forecast"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/weatherRecyclerView1"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"/>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/weatherRecyclerView2"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -167,6 +172,5 @@
                 android:layout_marginLeft="5dp"/>
         </LinearLayout>
     </ScrollView>
-
 
 </RelativeLayout>

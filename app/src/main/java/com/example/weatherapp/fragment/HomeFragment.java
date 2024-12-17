@@ -165,9 +165,9 @@ public class HomeFragment extends Fragment implements WeatherCallback {
 
     // 날씨 정보를 업데이트하는 메서드
     public void updateWeatherView(String rainType, String temp, String humidity, String sky) {
-        imgWeather.setImageResource(getWeatherImage(sky));
+        //imgWeather.setImageResource(getWeatherImage(sky));
         imgRainType.setImageResource(getRainTypeImage(rainType));
-        tvTemperature.setText("온도: " + temp + "°C");
+        tvTemperature.setText(temp + "°");
         tvRainType.setText("강수 형태: " + getRainType(rainType));
         tvHumidity.setText("습도: " + humidity + "%");
         tvSky.setText("하늘 상태: " + getSky(sky));

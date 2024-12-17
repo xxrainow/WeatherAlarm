@@ -53,14 +53,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
         }
 
         public void setItem(ModelWeather item) {
-            ImageView imgWeather = itemView.findViewById(R.id.imgWeather);
+            //ImageView imgWeather = itemView.findViewById(R.id.imgWeather);
             ImageView imgRainType = itemView.findViewById(R.id.imgRainType);
             TextView tvTime = itemView.findViewById(R.id.tvTime);           // 시각
             TextView tvRainType = itemView.findViewById(R.id.tvRainType);   // 강수 형태
             TextView tvSky = itemView.findViewById(R.id.tvSky);             // 하늘 상태
             TextView tvTemp = itemView.findViewById(R.id.tvTemp);           // 온도
 
-            imgWeather.setImageResource(getWeatherImage(item.getSky()));
+            //imgWeather.setImageResource(getWeatherImage(item.getSky()));
             imgRainType.setImageResource(getRainTypeImage(item.getRainType()));
             tvTime.setText(item.getFcstTime());
             tvRainType.setText(getRainType(item.getRainType()));

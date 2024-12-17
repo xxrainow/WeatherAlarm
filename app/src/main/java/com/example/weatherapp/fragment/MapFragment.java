@@ -28,8 +28,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,12 +66,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // Places API 초기화 (API 키를 정확히 입력)
+        if (!Places.isInitialized()) {
+            Places.initialize(requireContext(), "AIzaSyB-BNi6cHeQqP4jMpHV8ShkOOm3lTqYLsY");
+        }
         // Initialize the FusedLocationProviderClient
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
 
         // Get location and update address
         requestUserLocationAndSetupMarker();
+
+        // AutoCompleteSupportFragment 초기화
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // 반환할 필드 설정 (이름과 위도/경도)
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        autocompleteFragment.setHint("장소를 검색하세요");
+
+        // 장소 선택 리스너
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                Log.d("PlaceSelected", "Place: " + place.getName() + ", " + place.getLatLng());
+
+                // 선택된 장소에 마커 추가
+                LatLng latLng = place.getLatLng();
+                if (latLng != null) {
+                    addMarkerToMap(latLng, place.getName());
+                }
+            }
+
+            @Override
+            public void onError(@NonNull com.google.android.gms.common.api.Status status) {
+                Log.e("PlaceError", "An error occurred: " + status);
+                Toast.makeText(requireContext(), "장소 검색 오류: " + status, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void addMarkerToMap(LatLng latLng, String title) {
+        if (googleMap != null) {
+            googleMap.clear(); // 기존 마커 제거
+            googleMap.addMarker(new MarkerOptions().position(latLng).title(title));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+        }
     }
 
     @Override

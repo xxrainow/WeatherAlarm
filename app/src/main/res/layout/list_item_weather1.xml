@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="10dp"
+    android:padding="8dp"
     android:layout_margin="5dp"
     android:background="@drawable/recycler_background">
 
@@ -16,7 +16,8 @@
         android:text="00시"
         android:textColor="@color/white"
         android:textSize="24dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="4dp"/>
 
     <TableLayout
         android:layout_width="match_parent"
@@ -28,13 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp">
-            <ImageView
-                android:id="@+id/imgWeather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/sky_1_sun_cloud"
-                android:layout_marginBottom="7dp"
-                android:layout_marginRight="8dp"/>
+
             <ImageView
                 android:id="@+id/imgRainType"
                 android:layout_width="64dp"
@@ -49,13 +44,15 @@
                 android:layout_height="wrap_content"
                 android:text="기온"
                 android:textSize="15dp"
-                android:paddingRight="30dp"/>
+                android:paddingRight="30dp"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/tvTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:textColor="@color/white"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -63,13 +60,15 @@
                 android:layout_height="wrap_content"
                 android:text="하늘 상태"
                 android:textSize="15dp"
-                android:paddingRight="30dp"/>
+                android:paddingRight="30dp"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/tvSky"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:textColor="@color/white"/>
         </TableRow>
         <TableRow>
             <TextView
@@ -77,13 +76,15 @@
                 android:layout_height="wrap_content"
                 android:text="강수 형태"
                 android:textSize="15dp"
-                android:paddingRight="30dp"/>
+                android:paddingRight="30dp"
+                android:textColor="@color/white"/>
             <TextView
                 android:id="@+id/tvRainType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:textColor="@color/white"/>
         </TableRow>
 
     </TableLayout>
