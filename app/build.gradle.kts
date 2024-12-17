@@ -37,9 +37,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.room.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 
     // retrofit2
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -58,5 +60,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:17.0.0")
     implementation("com.google.android.gms:play-services-location:17.0.0")
     implementation("com.google.android.libraries.places:places:3.3.0")
+
+    // Room 라이브러리
+    implementation("androidx.room:room-runtime:2.5.2")
+    annotationProcessor("androidx.room:room-compiler:2.5.2")
+    testImplementation("androidx.room:room-testing:2.5.2")
 
 }

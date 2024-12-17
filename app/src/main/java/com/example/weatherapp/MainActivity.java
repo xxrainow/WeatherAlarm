@@ -1,11 +1,8 @@
 package com.example.weatherapp;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,7 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.weatherapp.fragment.HomeFragment;
 import com.example.weatherapp.fragment.MapFragment;
-import com.example.weatherapp.fragment.NotificationFragment;
+
+import com.example.weatherapp.fragment.NotificationDefaultFragment;
 import com.example.weatherapp.fragment.RecommendationFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 다른 Fragment로 전환 가능 (예시)
         navClothes.setOnClickListener(v -> replaceFragment(new RecommendationFragment()));
-        navNotification.setOnClickListener(v -> replaceFragment(new NotificationFragment()));
+        navNotification.setOnClickListener(v -> replaceFragment(new NotificationDefaultFragment()));
         navMap.setOnClickListener(v -> replaceFragment(new MapFragment()));
 
 

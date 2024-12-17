@@ -1,7 +1,6 @@
 package com.example.weatherapp.fragment;
 
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,22 +16,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.weatherapp.MainActivity;
 import com.example.weatherapp.R;
-import com.example.weatherapp.notification.AlarmFunctions;
-import com.example.weatherapp.notification.AlarmPreferences;
+import com.example.weatherapp.alarm.Alarm;
+import com.example.weatherapp.alarm.AlarmDatabase;
+import com.example.weatherapp.alarm.AlarmScheduler;
 
 import java.util.Calendar;
 
 public class NotificationSettingFragment1 extends Fragment {
-    private ImageButton backBtn;
-    private static final String TAG = "NotificationSettingFragment1";
+    private static final String TAG = "NotificationSetting";
 
     private Calendar alarmTime;
     private EditText tvAlarmMessage;
     private Switch switchAlarm;
     private TextView selectedTime;
     private Button btnSetting;
+    private ImageButton btnBack; // 뒤로 가기 버튼
 
     @Nullable
     @Override
@@ -44,40 +43,38 @@ public class NotificationSettingFragment1 extends Fragment {
         tvAlarmMessage = view.findViewById(R.id.tvAlarmMessage);
         switchAlarm = view.findViewById(R.id.switchAlarm);
         btnSetting = view.findViewById(R.id.btnSetting);
-        backBtn = view.findViewById(R.id.btnBack);
+        btnBack = view.findViewById(R.id.btnBack);
 
         alarmTime = Calendar.getInstance();
-
-        // SharedPreferences에서 데이터를 불러와 UI 업데이트
-        updateUIFromStoredValues();
+        loadAlarmFromDatabase();
 
         // 타임피커 설정
         selectedTime.setOnClickListener(v -> showTimePicker());
 
-        // btnSetting 클릭 리스너
+        // 설정 버튼 클릭 리스너
         btnSetting.setOnClickListener(v -> {
-            String selectedTimeText = selectedTime.getText().toString();
+            // 입력값 가져오기
             String message = tvAlarmMessage.getText().toString();
             boolean isAlarmOn = switchAlarm.isChecked();
+            int hour = alarmTime.get(Calendar.HOUR_OF_DAY);
+            int minute = alarmTime.get(Calendar.MINUTE);
 
-            if (message.isEmpty() || selectedTimeText.equals("Select Time")) {
-                Log.w(TAG, "Invalid input: Time or message is missing");
+            if (message.isEmpty()) {
+                Log.w(TAG, "메시지가 비어있습니다.");
                 return;
             }
 
-            // 데이터를 SharedPreferences에 저장
-            AlarmPreferences alarmPreferences = new AlarmPreferences(requireContext());
-            alarmPreferences.saveAlarm(selectedTimeText, message, isAlarmOn);
-
-            // 저장된 값 로깅
-            alarmPreferences.logStoredValues();
-            Log.d("세팅 버튼 눌러서 저장한 값", "Saved data - Time: " + selectedTimeText + ", Message: " + message + ", Alarm: " + (isAlarmOn ? "ON" : "OFF"));
-
-            // DefaultFragment로 돌아가기
-            requireActivity().getSupportFragmentManager().popBackStack();
+            saveAlarmToDatabase(isAlarmOn, hour, minute, message);
+            // UI 스레드에서 이전 화면으로 이동
+            loadAlarmFromDatabase();
+            replaceFragment(new NotificationDefaultFragment());
         });
 
-        backBtn.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        // 뒤로 가기 버튼 클릭 리스너
+        btnBack.setOnClickListener(v -> {
+            Log.d(TAG, "뒤로 가기 버튼 클릭 - 데이터 저장 없이 뒤로 이동");
+            requireActivity().getSupportFragmentManager().popBackStack(); // 데이터 저장 없이 이전 화면으로 이동
+        });
 
         return view;
     }
@@ -91,24 +88,72 @@ public class NotificationSettingFragment1 extends Fragment {
         timePicker.show();
     }
 
-    /**
-     * SharedPreferences에서 데이터를 불러와 UI를 업데이트
-     */
-    private void updateUIFromStoredValues() {
-        AlarmPreferences alarmPreferences = new AlarmPreferences(requireContext());
-        AlarmPreferences.AlarmData alarmData = alarmPreferences.loadStoredValues();
+    private void loadAlarmFromDatabase() {
+        new Thread(() -> {
+            AlarmDatabase db = AlarmDatabase.getInstance(requireContext());
+            Alarm existingAlarm = db.alarmDao().getFirstAlarm();
 
-        // 저장된 데이터 로그 출력
-        Log.d(TAG, "Loaded data - Time: " + alarmData.time + ", Message: " + alarmData.message + ", Alarm: " + (alarmData.isAlarmOn ? "ON" : "OFF"));
+            if (existingAlarm != null) {
+                int hour = existingAlarm.hour;
+                int minute = existingAlarm.minute;
+                String message = existingAlarm.message;
+                boolean isAlarmOn = existingAlarm.isOn;
 
-        // UI 업데이트
-        if (!alarmData.time.equals("00:00")) {
-            selectedTime.setText(alarmData.time);
-            alarmTime = alarmData.alarmTime;
-        }
+                // UI 스레드에서 업데이트
+                requireActivity().runOnUiThread(() -> {
+                    selectedTime.setText(String.format("%02d:%02d", hour, minute));
+                    tvAlarmMessage.setText(message);
+                    switchAlarm.setChecked(isAlarmOn);
+                    alarmTime.set(Calendar.HOUR_OF_DAY, hour);
+                    alarmTime.set(Calendar.MINUTE, minute);
 
-        tvAlarmMessage.setText(alarmData.message);
-        switchAlarm.setChecked(alarmData.isAlarmOn);
+                    Log.d(TAG, "알람 정보 로드 완료 - 시간: " + hour + ":" + minute + ", 메시지: " + message + ", 상태: " + isAlarmOn);
+                });
+            } else {
+                Log.d(TAG, "저장된 알람 정보가 없습니다.");
+            }
+        }).start();
     }
-}
 
+    private void saveAlarmToDatabase(boolean isAlarmOn, int hour, int minute, String message) {
+        new Thread(() -> {
+            AlarmDatabase db = AlarmDatabase.getInstance(requireContext());
+            Alarm existingAlarm = db.alarmDao().getFirstAlarm();
+            Alarm alarm;
+
+            if (existingAlarm != null) {
+                // 기존 알람 업데이트
+                existingAlarm.hour = hour;
+                existingAlarm.minute = minute;
+                existingAlarm.message = message;
+                existingAlarm.isOn = isAlarmOn;
+
+                db.alarmDao().updateAlarm(existingAlarm);
+                alarm = existingAlarm;
+                Log.d(TAG, "알람 업데이트 완료");
+            } else {
+                // 새 알람 추가
+                alarm = new Alarm(isAlarmOn, hour, minute, message);
+                db.alarmDao().insertOrReplaceAlarm(alarm);
+                Log.d(TAG, "새 알람 추가 완료");
+            }
+
+            // 알람 예약 설정
+            if (isAlarmOn) {
+                AlarmScheduler.scheduleAlarm(requireContext(), alarm);
+                Log.d(TAG, "알람 예약됨: " + hour + ":" + minute);
+            } else {
+                Log.d(TAG, "알람 비활성화됨");
+            }
+
+            }).start();
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentNotificationContainer, fragment) // 해당 컨테이너 ID 사용
+                .commit();
+    }
+
+}
