@@ -30,23 +30,6 @@ This app provides weather information, weather alerts, and clothing recommendati
 
 ## Screen
 - 날씨 정보 홈화면
-![jeju](https://github.com/user-attachments/assets/2c707b6b-0df3-4dee-8101-0e7dfc1012d5)
-![home](https://github.com/user-attachments/assets/e7c2f3a7-22c4-42e2-82e9-9c76cb6e6cb6)
-![daegu](https://github.com/user-attachments/assets/7d7e6e38-2177-4cb2-a14e-014414da582b)
-![광주눈날림](https://github.com/user-attachments/assets/6704294b-c2f1-4bbe-bc3d-1362a0fd34eb)
-![busan](https://github.com/user-attachments/assets/40355eba-3872-4c73-8c00-9480b752ab44)
-
-- 옷 추천
-![clothrecommendation](https://github.com/user-attachments/assets/249b1b9e-8876-4fd5-876a-4174a448e5b3)
-
-- 알림 서비스
-![alarmSetting](https://github.com/user-attachments/assets/91f64c16-5a70-495c-89b3-531ad9bef355)
-
-- 지도
-![map](https://github.com/user-attachments/assets/0a7e9126-7706-435d-8416-5e08ad0af421)
-
-<!-- 이미지 그리드 -->
-
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;">
 
   <img src="https://github.com/user-attachments/assets/2c707b6b-0df3-4dee-8101-0e7dfc1012d5" alt="jeju" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
@@ -60,6 +43,29 @@ This app provides weather information, weather alerts, and clothing recommendati
   <img src="https://github.com/user-attachments/assets/40355eba-3872-4c73-8c00-9480b752ab44" alt="busan" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
 
 </div>
+
+
+- 옷 추천
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/249b1b9e-8876-4fd5-876a-4174a448e5b3" alt="recommend" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+</div>
+
+- 알림 서비스
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/91f64c16-5a70-495c-89b3-531ad9bef355" alt="alarm" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+</div>
+
+- 지도
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/0a7e9126-7706-435d-8416-5e08ad0af421" alt="map" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+</div>
+
+
+- 시연 영상
+
+https://github.com/user-attachments/assets/4449456e-6d6b-4be8-a989-ff97b063fa55
+
+
 
 
 ref.
