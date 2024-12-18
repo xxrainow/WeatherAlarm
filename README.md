@@ -53,6 +53,7 @@ This app provides weather information, weather alerts, and clothing recommendati
 - 알림 서비스
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;">
   <img src="https://github.com/user-attachments/assets/91f64c16-5a70-495c-89b3-531ad9bef355" alt="alarm" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+  <img src="https://github.com/user-attachments/assets/f42b0a92-0f4f-430d-8fdd-ef528d1461c4" alt="alarm2" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
 </div>
 
 - 지도
