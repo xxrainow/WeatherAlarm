@@ -66,7 +66,9 @@ This app provides weather information, weather alerts, and clothing recommendati
 
 https://github.com/user-attachments/assets/4449456e-6d6b-4be8-a989-ff97b063fa55
 
-
+- 발표 자료
+- 더 자세히 앱에 대한 설명이 있습니다 :)
+[날씨앱 발표자료 22101186 신지우.pdf](https://github.com/user-attachments/files/18181858/22101186.pdf)
 
 
 ref.
