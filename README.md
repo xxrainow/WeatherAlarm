@@ -45,6 +45,23 @@ This app provides weather information, weather alerts, and clothing recommendati
 - 지도
 ![map](https://github.com/user-attachments/assets/0a7e9126-7706-435d-8416-5e08ad0af421)
 
+<!-- 이미지 그리드 -->
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;">
+
+  <img src="https://github.com/user-attachments/assets/2c707b6b-0df3-4dee-8101-0e7dfc1012d5" alt="jeju" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+
+  <img src="https://github.com/user-attachments/assets/e7c2f3a7-22c4-42e2-82e9-9c76cb6e6cb6" alt="home" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+
+  <img src="https://github.com/user-attachments/assets/7d7e6e38-2177-4cb2-a14e-014414da582b" alt="daegu" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+
+  <img src="https://github.com/user-attachments/assets/6704294b-c2f1-4bbe-bc3d-1362a0fd34eb" alt="gwangju" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+
+  <img src="https://github.com/user-attachments/assets/40355eba-3872-4c73-8c00-9480b752ab44" alt="busan" style="width: 30%; max-width: 300px; height: auto; border: 1px solid #ccc; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);">
+
+</div>
+
+
 ref.
 https://min-wachya.tistory.com/163
 https://min-wachya.tistory.com/164?category=900504
